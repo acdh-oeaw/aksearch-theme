@@ -1,7 +1,120 @@
-@import "bootstrap"; /* Include less base from bootstrap theme (= parent theme) */
+/* Include less base from bootstrap theme (= parent theme) */
+@import "bootstrap";
 
-/*
-body {
-    color: green !important;
+
+.navbar-brand {
+    /* Making space for AKsearch Logo */
+    height: auto;
+    
+    /* Align AKsearch Logo with Search field */
+    padding-left: 0;
 }
-*/
+
+.akSearchboxBackground {
+    /* Background color */
+    background: none repeat scroll 0 0 #be0021;
+
+    /* Padding top and bottom of red bar */
+    padding: 8px 0 8px 0;
+
+    /* 100% viewport width */
+    width: 100vw;
+    
+    /* Fix left margin: */
+    margin-left: -50vw;
+    left: 50%;
+    position: relative;
+
+    /* Fix left margin in one line - maybe not supported by all Browsers */
+    /* margin-left: calc(~"50% - 50vw"); */
+}
+
+#searchForm {
+    /* Stretching the whole form with the searchbox in the red bar */
+    width: 100%;
+    
+}
+
+
+/* Styling searchbox and dropdown next to searchbox */
+.akSearchboxBackground #searchForm_lookfor,
+.akSearchboxBackground #searchForm_type {
+    background: none repeat scroll 0 0 #fff;
+    border: 0 none;
+    color: #666666;
+    font-size: 1em;
+    height: 24px;
+    line-height: 25px;
+    margin: 1px 0 0 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 8px;
+    border-radius: 0px;
+}
+
+/* General button style */
+.btn {
+	display: inline-block;
+	margin-bottom: 0;
+	font-weight: normal;
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+	background-image: none;
+	white-space: nowrap;
+	font-size: 14px;
+	border-radius: 0px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	border: 0px solid transparent;
+	height: 24px;
+	line-height: 25px;
+	margin: 1px 0 0;
+	padding: 0px 6px 6px 6px;
+}
+
+/* Styling search button */
+#searchForm .btn-primary {
+    background-color: white;
+    text-decoration: none;
+    color: #333;
+}
+
+/* Styling link to advanced search form */
+#searchForm .btn-link {
+	background-color: none;
+	color: #fff;
+	outline: none;
+}
+
+
+@media (min-width:768px) {
+    .container {
+        /* Overall width */
+        width: 85%;
+        
+    }
+
+    .akSearchboxBackground #searchForm_lookfor {
+        /* Stretching the searchbox */
+        width: 40%;
+    }
+
+}
+
+@media (min-width:992px) {
+    .container {
+        /* Overall width */
+        width: 85%;
+    }
+}
+
+@media (min-width:1200px) {
+    .container {
+        /* Overall width */
+        width: 85%;
+    }
+}

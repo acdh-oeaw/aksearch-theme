@@ -5,8 +5,8 @@
       <span class="sr-only">Toggle navigation</span>
       <i class="fa fa-bars" aria-hidden="true"></i>
     </button>
-    <a class="navbar-brand lang-<?=$this->layout()->userLang ?>" href="<?=$this->url('home')?>"> 
-      <img src="<?=$this->imageLink('aksearch_logo.png')?>" />
+    <a class="navbar-brand lang-<?=$this->layout()->userLang ?>" href="<?=$this->url('home')?>">
+      <img src="<?=$this->imageLink('aksearch_logo.png')?>" /> <!-- AK: Adding AKsearch Logo -->
     </a>
   </div>
   <?php if (!isset($this->layout()->renderingError)): ?>
@@ -85,7 +85,13 @@
 <?php if ($this->layout()->searchbox !== false): ?>
   <div class="search container navbar">
     <nav class="nav searchbox hidden-print">
-      <?=$this->layout()->searchbox ?>
+      <div class="akSearchboxBackground"> <!-- AK: Red background bar for search form - not start page (for this: see home.phtml)! -->
+        <div class="container"> <!-- AK: For keeping margins despite whole-width background bar - not start page (for this: see home.phtml)! -->
+          <?=$this->layout()->searchbox ?>
+        </div>
+      </div>
     </nav>
   </div>
+</div>
+
 <?php endif; ?>

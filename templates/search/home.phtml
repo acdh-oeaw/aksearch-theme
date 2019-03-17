@@ -14,7 +14,11 @@
 ?>
 
 <div class="searchHomeContent">
-  <?=$this->context($this)->renderInContext("search/searchbox.phtml", ['ignoreHiddenFilterMemory' => true])?>
-  <?=$this->inlineScript(\Zend\View\Helper\HeadScript::SCRIPT, '$("#searchForm_lookfor").focus();', 'SET'); ?>
+  <div class="akSearchboxBackground"> <!-- AK: Red background bar for search form - only on start page before first search (for others: see header.phtml)! -->
+    <div class="container"> <!-- AK: For keeping margins despite whole-width background bar - only on start page before first search (for others: see header.phtml)! -->
+      <?=$this->context($this)->renderInContext("search/searchbox.phtml", ['ignoreHiddenFilterMemory' => true])?>
+      <?=$this->inlineScript(\Zend\View\Helper\HeadScript::SCRIPT, '$("#searchForm_lookfor").focus();', 'SET'); ?>
+    </div>
+  </div>
 </div>
 <?=implode('', array_map([$this, 'contentBlock'], $blocks ?? []))?>
