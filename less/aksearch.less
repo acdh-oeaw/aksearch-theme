@@ -39,20 +39,28 @@
     outline: none;
 }
 
-/* Breadcumb Bar - GOING ON HERE */
-
+/* Adding a gray background bar that spans over the whole site to the breadcrumbs */
 .breadcrumbs {
     background-color: #f5f5f5;
 }
+
+/* Padding within the breadcrumb bar */
 .breadcrumb {
-    padding: 0px 15px 0px 15px;
+    padding: 0px 15px 0px 0px;
 }
+
+/* Removing the space between the red search bar and the gray breadcrumb bar */
 header .search.container.navbar {
     min-height: 0;
     border: none;
 }
 
-
+/* Adding a space between the breadcrumb bar and the main content of the page for better styling.
+   See div in layout.phtml
+*/
+.akBreadcrumbSpacer {
+    margin-bottom: 15px;
+}
 
 /* Styling searchbox and dropdown next to searchbox */
 .akSearchboxBackground #searchForm_lookfor,
