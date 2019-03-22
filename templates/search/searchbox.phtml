@@ -48,6 +48,10 @@
     <?php if ($handlerCount > 1): ?>
       <select id="searchForm_type" class="searchForm_type form-control" name="type" data-native-menu="false" aria-label="<?=$this->transEsc("Search type")?>">
         <?php foreach ($handlers as $handler): ?>
+          <?php
+          // AK: Setting indent to "false" so that we don't have two extra dashes ("--") before the DropDown options
+          $handler['indent'] = false;
+          ?>
           <option value="<?=$this->escapeHtmlAttr($handler['value'])?>"<?=$handler['selected'] ? ' selected="selected"' : ''?>><?=$handler['indent'] ? '-- ' : ''?><?=$this->transEsc($handler['label'])?></option>
         <?php endforeach; ?>
       </select>
