@@ -109,6 +109,20 @@ header .search.container.navbar {
 	outline: none;
 }
 
+// Stretching facet select boxes on new items search page and adding some space
+// below them for better layout.
+.solr-newitem-facet select {
+    max-width: 90%;
+    margin-bottom: 20px;
+}
+
+// Smaller font size and some spacing for heading of facet select boxes on new
+// items search page.
+.form-search-newitem legend {
+    font-size: 18px;
+    margin-top: 15px;
+}
+
 // Style for other screen sizes
 @media (min-width:768px) {
     .container {
@@ -118,6 +132,11 @@ header .search.container.navbar {
 
     .akSearchboxBackground #searchForm_lookfor {
         width: 40%; // Stretching the searchbox
+    }
+
+    // Wrapper for facet boxes on the new items search page 
+    .solr-newitem-facet {
+        flex: 1 25%;
     }
 
 }
