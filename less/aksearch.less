@@ -110,18 +110,35 @@ header .search.container.navbar {
 }
 
 // Stretching facet select boxes on new items search page and adding some space
-// below them for better layout.
+// below them for better layout
 .solr-newitem-facet select {
     max-width: 90%;
     margin-bottom: 20px;
 }
 
 // Smaller font size and some spacing for heading of facet select boxes on new
-// items search page.
+// items search page
 .form-search-newitem legend {
     font-size: 18px;
     margin-top: 15px;
 }
+
+// Adjusting the width of the date range field on the new items search page
+.input-daterange {
+    width: auto !important;
+}
+
+// Bigger font for datepicker on the new items search page
+#datepicker .input-sm {
+    font-size: 14px;
+}
+
+// Set the bg color of the readonly text fields of the datepicker to white so that
+// the user is not discuraged to click in it.
+#datepicker .form-control[disabled], #datepicker .form-control[readonly] {
+    background-color: white;
+}
+
 
 // Style for other screen sizes
 @media (min-width:768px) {
