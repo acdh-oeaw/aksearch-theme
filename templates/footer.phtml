@@ -21,6 +21,7 @@
       <p><strong><?=$this->transEsc('Need Help?')?></strong></p>
       <ul>
         <li><a href="<?=$this->url('help-home')?>?topic=search&amp;_=<?=time() ?>" data-lightbox class="help-link"><?=$this->transEsc('Search Tips')?></a></li>
+        <li><a href="<?=$this->url('content-page', ['page' => 'about']) ?>"><?=$this->transEsc('about')?></a></li>
         <li><a href="<?=$this->url('content-page', ['page' => 'privacy']) ?>"><?=$this->transEsc('privacy_statement')?></a></li>
       </ul>
     </div>
