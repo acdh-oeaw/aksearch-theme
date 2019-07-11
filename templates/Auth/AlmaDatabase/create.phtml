@@ -1,0 +1,232 @@
+<?php
+
+$pattern = '';
+if (isset($this->passwordPolicy['pattern'])) {
+  if ($this->passwordPolicy['pattern'] == 'numeric') {
+    $pattern = '\d+';
+  } elseif ($this->passwordPolicy['pattern'] == 'alphanumeric') {
+    $pattern = '[\da-zA-Z]+';
+  } else {
+    $pattern = $this->passwordPolicy['pattern'];
+  }
+}
+
+// AK: Get the [NewUser] section of the ILS driver config file (e. g. Alma.ini)
+$ilsDriverConfig = $this->ils()->getDriverConfig();
+$newUserConfig = $ilsDriverConfig['NewUser'] ?? [];
+
+// Required fields
+$requiredFields = preg_split('/\s*,\s*/', $newUserConfig['requiredFields']);
+foreach ($requiredFields as $requiredField) {
+  ${$requiredField . 'Required'} = 'required aria-required="true"';
+}
+
+// Salutation dropdown element
+$salutation = ($this->request->get('salutation')) ? $this->escapeHtmlAttr($this->request->get('salutation')) : null;
+$salutationSelectedNone = ($salutation == null || $salutation == '') ? 'selected="selected"' : '';
+$salutationSelectedMs = ($salutation != null && $salutation == $this->escapeHtmlAttr($this->transEsc('salutationMs'))) ? 'selected="selected"' : '';
+$salutationSelectedMr = ($salutation != null && $salutation == $this->escapeHtmlAttr($this->transEsc('salutationMr'))) ? 'selected="selected"' : '';
+$salutationSelectedOth = ($salutation != null && $salutation == $this->escapeHtmlAttr($this->transEsc('salutationOth'))) ? 'selected="selected"' : '';
+
+// Get statistical fields is any are configured
+$stats = $newUserConfig['statistics'] ?? [];
+
+// Create dropdown element(s) for statistical fields
+$statElements = [];
+foreach ($stats as $statType => $statCategory) {
+  $statFromPost = ($this->request->get($this->escapeHtmlAttr($statType))) ? $this->request->get($this->escapeHtmlAttr($statType)) : null;
+  $statVals = preg_split('/\s*,\s*/', $statCategory);
+  $statElement = '<select name="'.$this->escapeHtmlAttr($statType . '_almastat').'" id="'.$this->escapeHtmlAttr($statType . '_almastat').'" '.(${$statType . 'Required'} ?? '').'><option value="">'.$this->escapeHtmlAttr($this->transEsc('pleaseChoose')).'</option>';
+  foreach ($statVals as $statVal) {
+    $statSelected = ($statFromPost != null && $statFromPost === $this->escapeHtmlAttr($statVal)) ? 'selected="selected"' : '';
+    $statElement .= '<option value="'.$this->escapeHtmlAttr($statVal).'" '.$statSelected.'>'.$this->escapeHtmlAttr($this->transEsc($statVal . '_almastat')).'</option>';
+  }
+  $statElement .= '</select>';
+  $statElements[$statType . '_almastat'] = $statElement;
+}
+
+// Get file attachment fields if any are configured
+$files = $newUserConfig['fileAttachment'] ?? [];
+
+// Create file picker fields
+$fileElements = [];
+foreach ($files as $fileName => $fileInfoText) {
+	$fileElement = '<input type="file" name="'.$this->escapeHtmlAttr($fileName . '_file').'" id="'.$this->escapeHtmlAttr($fileName . '_file').'" '.(${$fileName . 'Required'} ?? '').'>';
+	$fileElement .= ($fileInfoText != null && !empty(trim($fileInfoText))) ? '<div class="fileInfoText">'.$this->transEsc($fileInfoText).'</div>' : '';
+	$fileElements[$fileName] = $fileElement;
+}
+
+//$residenceRegistrationCardSending = $this->residenceRegistrationCardSending;
+
+?>
+
+<table id="almaUserRegistration" class="table table-striped">
+	<tr>
+		<td><?=$this->transEsc('salutation')?> </td>
+		<td class="form-group" colspan="2">
+			<select name="salutation" id="salutation" <?=(($salutationRequired) ?? '')?>>
+				<option value="" <?=$salutationSelectedNone?>><?=$this->escapeHtmlAttr($this->transEsc('pleaseChoose'))?></option>
+				<option value="<?=$this->escapeHtmlAttr($this->transEsc('salutationMs'))?>" <?=$salutationSelectedMs?>><?=$this->escapeHtmlAttr($this->transEsc('salutationMs'))?></option>
+				<option value="<?=$this->escapeHtmlAttr($this->transEsc('salutationMr'))?>" <?=$salutationSelectedMr?>><?=$this->escapeHtmlAttr($this->transEsc('salutationMr'))?></option>
+        <option value="<?=$this->escapeHtmlAttr($this->transEsc('salutationOth'))?>" <?=$salutationSelectedOth?>><?=$this->escapeHtmlAttr($this->transEsc('salutationOth'))?></option>
+      </select>
+			<div class="help-block with-errors"></div>
+		</td>
+	</tr>
+
+	<tr>
+		<td><?=$this->transEsc('First Name')?></td>
+		<td class="form-group" colspan="2">
+			<input type="text" name="firstname" id="firstname" class="form-control" value="<?=$this->escapeHtmlAttr($this->request->get('firstname'))?>" <?=(($firstNameRequired) ?? '')?> />
+			<div class="help-block with-errors"></div>
+		</td>
+	</tr>
+
+	<tr>
+		<td><?=$this->transEsc('Last Name')?></td>
+		<td class="form-group" colspan="2">
+			<input type="text" name="lastname" id="lastname" class="form-control" value="<?=$this->escapeHtmlAttr($this->request->get('lastname'))?>" <?=(($lastNameRequired) ?? '')?> />
+			<div class="help-block with-errors"></div>
+		</td>
+	</tr>
+
+	<tr>
+		<td><?=$this->transEsc('street')?></td>
+		<td class="form-group" colspan="2">
+			<input type="text" name="street" id="street" class="form-control" value="<?=$this->escapeHtmlAttr($this->request->get('street'))?>" <?=(($streetRequired) ?? '')?> />
+			<div class="help-block with-errors"></div>
+		</td>
+	</tr>
+
+	<tr>
+		<td><?=$this->transEsc('Zip')?></td>
+		<td class="form-group" colspan="2">
+			<input type="text" name="zip" id="zip" class="form-control" value="<?=$this->escapeHtmlAttr($this->request->get('zip'))?>" <?=(($zipRequired) ?? '')?> />
+			<div class="help-block with-errors"></div>
+		</td>
+	</tr>
+
+	<tr>
+		<td><?=$this->transEsc('city')?></td>
+		<td class="form-group" colspan="2">
+			<input type="text" name="city" id="city" class="form-control" value="<?=$this->escapeHtmlAttr($this->request->get('city'))?>" <?=(($cityRequired) ?? '')?> />
+			<div class="help-block with-errors"></div>
+		</td>
+	</tr>
+
+	<tr>
+		<td><?=$this->transEsc('Email Address')?></td>
+		<td class="form-group" colspan="2">
+			<input type="text" name="email" id="email" class="form-control" value="<?=$this->escapeHtmlAttr($this->request->get('email'))?>" <?=(($emailRequired) ?? '')?> />&nbsp;
+      <?php
+      /*
+      <span class="akInfoTooltipOpener" data-aktooltiptitle="<?=$this->transEsc('email')?>" data-aktooltiptext="<?=$this->translate('createAccountEmailTooltipText')?>"><i class="fa fa-info-circle akInfoTooltipInfo" aria-hidden="true"></i></span>	
+      */
+      ?>
+      <div class="help-block with-errors"></div>
+		</td>
+	</tr>
+
+	<tr>
+		<td><?=$this->transEsc('phoneno')?></td>
+		<td class="form-group" colspan="2">
+			<input type="text" name="phone" id="phone" class="form-control" value="<?=$this->escapeHtmlAttr($this->request->get('phone'))?>" <?=(($phoneRequired) ?? '')?> />
+			<div class="help-block with-errors"></div>
+		</td>
+	</tr>
+
+	<tr>
+		<td><?=$this->transEsc('Date of birth')?></td>
+		<td class="form-group" colspan="2">
+			<input type="text" name="birthday" id="birthdayDatePicker" class="form-control" data-date-end-date="0d" value="<?=$this->escapeHtmlAttr($this->request->get('birthday'))?>" autocomplete="off" <?=(($birthdayRequired) ?? '')?> />
+			<div class="help-block with-errors"></div>
+		</td>
+	  </tr>
+	  
+	<?php foreach ($statElements as $statName => $statElement): ?>
+		<tr>
+			<td><?=$this->transEsc($statName)?></td>
+			<td class="form-group" colspan="2">
+				<?=$statElement?>
+				<div class="help-block with-errors"></div>
+			</td>
+		</tr>
+	<?php endforeach; ?>
+
+	<tr>
+		<td><?=$this->transEsc('Password')?></td>
+		<td class="form-group" colspan="2">
+			<input type="password" name="password" id="password" class="form-control" <?=(($passwordRequired) ?? '')?>
+      <?=isset($this->passwordPolicy['minLength']) ? ' data-minlength="' . $this->passwordPolicy['minLength'] . '" data-minlength-error="' . $this->escapeHtmlAttr($this->translate('password_minimum_length', array('%%minlength%%' => $this->passwordPolicy['minLength']))) . '"' : ''?>
+      <?=isset($this->passwordPolicy['maxLength']) ? ' maxlength="' . $this->passwordPolicy['maxLength'] . '"' : ''?>
+      <?=$pattern ? ' pattern="' . $pattern . '"' : '' ?>
+      />&nbsp;
+      <?php if ($this->passwordPolicy['hint']): ?>
+        <div class="help-block"><?=$this->transEsc($this->passwordPolicy['hint']) ?></div>
+      <?php endif; ?>
+      <?php
+      /*
+      <span class="akInfoTooltipOpener" data-aktooltiptitle="<?=$this->transEsc('password')?>" data-aktooltiptext="<?php echo $this->translate('createAccountPasswordTooltipText', ['_minLength_' => $this->passwordPolicy['minLength']]); ?>"><i class="fa fa-info-circle akInfoTooltipInfo" aria-hidden="true"></i></span>
+      */
+      ?>
+      <div class="help-block with-errors"></div>
+		</td>
+	</tr>
+
+	<tr>
+		<td><?=$this->transEsc('Password Again')?></td>
+		<td class="form-group" colspan="2">
+			<input type="password" name="password2" id="password2" class="form-control" <?=(($passwordConfirmRequired) ?? '')?> data-match="#password" data-match-error="<?=$this->escapeHtmlAttr($this->translate('Passwords do not match'))?>" />&nbsp;
+			<?php
+      /*
+      <span class="akInfoTooltipOpener" data-aktooltiptitle="<?=$this->transEsc('passwordConfirm')?>" data-aktooltiptext="<?=$this->translate('createAccountPasswordAgainTooltipText')?>"><i class="fa fa-info-circle akInfoTooltipInfo" aria-hidden="true"></i></span>
+      */
+      ?>
+      <div class="help-block with-errors"></div>	
+		</td>
+	</tr>
+	
+	<?php foreach ($fileElements as $fileName => $fileElement): ?>
+		<tr>
+			<td><?=$this->transEsc($fileName)?></td>
+			<td class="form-group" colspan="2">
+				<?=$fileElement?>
+				<div class="help-block with-errors"></div>
+			</td>
+		</tr>
+	<?php endforeach; ?>
+
+	<tr class="form-group">
+		<td><?=$this->transEsc('dataProcessing')?></td>
+		<td>
+			<input type="checkbox" name="dataProcessing" id="dataProcessing" <?=(($dataProcessingRequired) ?? '')?>></input>
+		</td>
+		<td>
+			<?=$this->translate('dataProcessingText')?>
+			<div class="help-block with-errors"></div>
+		</td>
+	</tr>
+	
+	<tr class="form-group">
+		<td><?=$this->transEsc('loanHistory')?></td>
+		<td>
+			<input type="checkbox" name="loanHistory" id="loanHistory" />
+		</td>
+		<td>
+			<?=$this->translate('loanHistoryText')?>
+			<div class="help-block with-errors"></div>
+		</td>
+	</tr>
+	
+	<tr class="form-group">
+		<td><?=$this->transEsc('houseAndUsageRules')?></td>
+		<td>
+			<input type="checkbox" name="houseAndUsageRules" id="houseAndUsageRules" <?=(($houseAndUsageRulesRequired) ?? '')?>/>
+		</td>
+		<td>
+			<?=$this->translate('houseAndUsageRulesText')?>
+			<div class="help-block with-errors"></div>
+		</td>
+	</tr>
+
+</table>

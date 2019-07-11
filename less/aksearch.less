@@ -149,6 +149,25 @@ header .search.container.navbar {
     width: 100%;
 }
 
+// Remove red border from (Firefox) input fields when user first opens the
+// "create new user" form. Having almost all fields with red borders when
+// merely opening the form is quite disturbing for users.
+#almaUserRegistration input:required {
+    box-shadow: none !important;
+}
+
+// Remove margin from error messages of mandatory form fields in the "create
+// new user" form.
+#almaUserRegistration .form-group ul {
+    margin-left: 0px !important;
+}
+
+// Styling of file info text for sending the residential registration card
+// on the "create new user" form
+.fileInfoText {
+    margin-top: 10px;
+}
+
 // Style for other screen sizes
 @media (min-width:768px) {
     .container {
