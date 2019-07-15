@@ -4,15 +4,10 @@
 
     // AK: Include bootstrap-datepicker JS and CSS
     if ($useDatepicker) {
-        $language = $this->layout()->userLang ?? 'en';
-        if (strpos($language, '-') !== false) {
-            $languageArr = explode('-', $language);
-            $language = strtolower($languageArr[0]).'-'.strtoupper($languageArr[1]);
-        }
-        
-        $this->headScript()->appendFile('vendor/bootstrap-datepicker/bootstrap-datepicker.min.js');
-        $this->headScript()->appendFile('vendor/bootstrap-datepicker/locales/bootstrap-datepicker.'.$language.'.min.js');
-        $this->headLink()->appendStylesheet('vendor/bootstrap-datepicker/bootstrap-datepicker3.min.css');
+      $language = $this->datepicker()->getLanguage();      
+      $this->headScript()->appendFile('vendor/bootstrap-datepicker/bootstrap-datepicker.min.js');
+      $this->headScript()->appendFile('vendor/bootstrap-datepicker/locales/bootstrap-datepicker.'.$language.'.min.js');
+      $this->headLink()->appendStylesheet('vendor/bootstrap-datepicker/bootstrap-datepicker3.min.css');
     }
 
     // Set up page title:
@@ -111,7 +106,7 @@
 if ($useDatepicker) {
 
   // AK: Setting variables for JS
-  $dateFormat = $this->datePickerConfig['displayDateFormatJs'] ?? '';
+  $dateFormat = $this->datepicker()->getFormat($this->datePickerConfig['displayDateFormatPhp']);
   $startDate = $this->datePickerConfig['datepickerStartDate'] ?? '';
   $fromDateFull = $this->datePickerConfig['datepickerFromDateFull'] ?? '';
   $viewMode = ($this->datePickerConfig['datepickerMode'] === 'months') ? 1 : 0;
