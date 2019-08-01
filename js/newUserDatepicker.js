@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     // Get params from script tag.
     // ATTENTION: When the name of this file changes, the filename in the following
     //            JQuery selector (= script[src*=newItemDatepicker]) must be changed
@@ -18,4 +17,6 @@ $(document).ready(function () {
         disableTouchKeyboard: true,
         enableOnReadonly: true
     });
+
+
 });

@@ -11,9 +11,17 @@ if (isset($this->passwordPolicy['pattern'])) {
   }
 }
 
-// AK: Get the [NewUser] section of the ILS driver config file (e. g. Alma.ini)
+// AK: Get the ILS driver config
 $ilsDriverConfig = $this->ils()->getDriverConfig();
+
+// AK: Get the [NewUser] section of the ILS driver config file (e. g. Alma.ini)
 $newUserConfig = $ilsDriverConfig['NewUser'] ?? [];
+
+// AK: Check if transaction history is enabled
+$transactionHistoryEnabled = filter_var(
+        ($ilsDriverConfig['TransactionHistory']['enabled'] ?? false),
+        FILTER_VALIDATE_BOOLEAN
+);
 
 // AK: Required fields
 $requiredFields = preg_split('/\s*,\s*/', $newUserConfig['requiredFields']);
@@ -58,10 +66,9 @@ foreach ($files as $fileName => $fileInfoText) {
 
 // AK: Include bootstrap-datepicker JS and CSS for birthday field
 $language = $this->datepicker()->getLanguage();
-$this->headScript()->appendFile('vendor/bootstrap-datepicker/bootstrap-datepicker.min.js');
-$this->headScript()->appendFile('vendor/bootstrap-datepicker/locales/bootstrap-datepicker.'.$language.'.min.js');
-$this->headLink()->appendStylesheet('vendor/bootstrap-datepicker/bootstrap-datepicker3.min.css');
-
+echo $this->headScript()->appendFile('vendor/bootstrap-datepicker/bootstrap-datepicker.min.js');
+echo $this->headScript()->appendFile('vendor/bootstrap-datepicker/locales/bootstrap-datepicker.'.$language.'.min.js');
+echo $this->headLink()->appendStylesheet('vendor/bootstrap-datepicker/bootstrap-datepicker3.min.css');
 ?>
 
 <table id="almaUserRegistration" class="table table-striped">
@@ -203,7 +210,7 @@ $this->headLink()->appendStylesheet('vendor/bootstrap-datepicker/bootstrap-datep
     <tr class="form-group">
         <td><?=$this->transEsc('dataProcessing')?></td>
         <td>
-            <input type="checkbox" name="dataProcessing" id="dataProcessing" <?=(($dataProcessingRequired) ?? '')?>></input>
+            <input type="checkbox" name="dataProcessing" id="dataProcessing" <?=(($dataProcessingRequired) ?? '')?> />
         </td>
         <td>
             <?=$this->translate('dataProcessingText')?>
@@ -211,6 +218,7 @@ $this->headLink()->appendStylesheet('vendor/bootstrap-datepicker/bootstrap-datep
         </td>
     </tr>
     
+    <?php if ($transactionHistoryEnabled): ?>
     <tr class="form-group">
         <td><?=$this->transEsc('loanHistory')?></td>
         <td>
@@ -221,6 +229,7 @@ $this->headLink()->appendStylesheet('vendor/bootstrap-datepicker/bootstrap-datep
             <div class="help-block with-errors"></div>
         </td>
     </tr>
+    <?php endif; ?>
     
     <tr class="form-group">
         <td><?=$this->transEsc('houseAndUsageRules')?></td>
@@ -249,10 +258,11 @@ $this->inlineScript()->setAllowArbitraryAttributes(true);
 //     the JS file needs to be changed too!
 echo $this->inlineScript()->appendFile(
     'newUserDatepicker.js',
-    null,
+    'text/javascript',
     [
         'dateformat' => $dateFormat,
         'language' => $language
     ]
 );
+
 ?>
