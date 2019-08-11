@@ -5,7 +5,7 @@
  *     This is important for being able to send e-mail file attachments from the new
  *     user registration form.
  */
-/*global grecaptcha, recaptchaOnLoad, resetCaptcha, VuFind */
+/*global recaptchaOnLoad, resetCaptcha, VuFind */
 VuFind.register('lightbox', function Lightbox() {
   // State
   var _originalUrl = false;
@@ -151,9 +151,11 @@ VuFind.register('lightbox', function Lightbox() {
     _xhr.always(function lbAjaxAlways() { _xhr = false; })
       .done(function lbAjaxDone(content, status, jq_xhr) {
         var errorMsgs = [];
+        var flashMessages = [];
         if (jq_xhr.status !== 205) {
           var testDiv = $('<div/>').html(content);
           errorMsgs = testDiv.find('.flash-message.alert-danger:not([data-lightbox-ignore])');
+          flashMessages = testDiv.find('.flash-message:not([data-lightbox-ignore])');
           // Place Hold error isolation
           if (obj.url.match(/\/Record\/.*(Hold|Request)\?/)) {
             if (errorMsgs.length && testDiv.find('.record').length) {
@@ -174,7 +176,7 @@ VuFind.register('lightbox', function Lightbox() {
           obj.method && (
             obj.url.match(/catalogLogin/)
             || obj.url.match(/MyResearch\/(?!Bulk|Delete|Recover)/)
-          ) && errorMsgs.length === 0
+          ) && flashMessages.length === 0
         ) {
 
           var eventResult = _emit('VuFind.lightbox.login', {
@@ -285,15 +287,6 @@ VuFind.register('lightbox', function Lightbox() {
     //     does NOT serialize content of file input fields of forms.
     var data = new FormData(form);
 
-    // Check for recaptcha
-    if (typeof grecaptcha !== 'undefined') {
-      var recaptcha = $(form).find('.g-recaptcha');
-      if (recaptcha.length > 0) {
-        // ORIGINAL: data.push({ name: 'g-recaptcha-response', value: grecaptcha.getResponse(recaptcha.data('captchaId')) });
-        // AK: Use FormData object
-        data.append('g-recaptcha-response', grecaptcha.getResponse(recaptcha.data('captchaId')));
-      }
-    }
     // Force layout
     // ORIGINAL: data.push({ name: 'layout', value: 'lightbox' }); // Return in lightbox, please
     // AK: Use FormData object
@@ -343,8 +336,8 @@ VuFind.register('lightbox', function Lightbox() {
     }
     // Store custom title
     _lightboxTitle = submit.data('lightboxTitle') || $(form).data('lightboxTitle') || '';
-
     // Get Lightbox content
+    // AK: Add necessary options for using FormData with ajax
     ajax({
       processData: false,
       contentType: false,
@@ -390,7 +383,7 @@ VuFind.register('lightbox', function Lightbox() {
         });
         imageCheck.done(function lightboxImageCheckDone(content, status, jq_xhr) {
           if (
-            jq_xhr.status === 200 && 
+            jq_xhr.status === 200 &&
             jq_xhr.getResponseHeader("content-type").substr(0, 5) === "image"
           ) {
             render('<div class="lightbox-image"><img src="' + url + '"/></div>');
