@@ -69,6 +69,7 @@
     <p>
       <?=$this->context($this)->renderInContext('librarycards/selectcard.phtml', ['user' => $this->user]); ?>
     </p>
+    
     <table class="table table-striped">
       <?=$this->renderArray(
         $arrTemplate, $this->profile,
@@ -114,11 +115,10 @@
       <?php endif; ?>
     </div>
 
+    <br /> <?php // AK: Spacer ?>
   <?php elseif ('ils-none' !== $this->ils()->getOfflineMode() && $this->patronLoginView && !empty($this->patronLoginView->getTemplate())): ?>
     <?=$this->partial($this->patronLoginView);?>
   <?php endif; ?>
-
-
 </div>
 
 <div class="<?=$this->layoutClass('sidebar')?>" id="myresearch-sidebar">
