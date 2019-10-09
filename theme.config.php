@@ -5,8 +5,8 @@ return [
       'factories' => [
         'AkSearch\View\Helper\AkSearch\Datepicker' => 'AkSearch\View\Helper\AkSearch\DatepickerFactory',
         'AkSearch\View\Helper\Root\SearchBox' => 'AkSearch\View\Helper\Root\SearchBoxFactory',
-        'AkSearch\View\Helper\Root\Auth' => 'VuFind\View\Helper\Root\AuthFactory'
-
+        'AkSearch\View\Helper\Root\Auth' => 'VuFind\View\Helper\Root\AuthFactory',
+        'VuFind\View\Helper\Root\RecordDataFormatter' => 'AkSearch\View\Helper\Root\RecordDataFormatterFactory'
       ],
       'aliases' => [
         'auth' => 'AkSearch\View\Helper\Root\Auth',

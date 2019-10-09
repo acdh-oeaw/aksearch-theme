@@ -169,6 +169,19 @@ header .search.container.navbar {
     margin-top: 10px;
 }
 
+// Adjust the separator between the single elements of a keyword chain
+// (= Schlagwortkette)
+.akKeywordChainSeparator {
+    font-size: 90%;
+}
+
+// Separate the single lines of keyword chains so that they are clearly
+// distinguishable from each other. But: don't add a space after the last
+// line as this is not necessary.
+.subject-line:not(:last-child) {
+    margin-bottom: 18px;
+}
+
 // Style for other screen sizes
 @media (min-width:768px) {
     .container {

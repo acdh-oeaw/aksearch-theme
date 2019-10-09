@@ -1,0 +1,12 @@
+<?php foreach ($data as $field): ?>
+  <div class="subject-line" property="keywords">
+    <?php $subject = ''; ?>
+    <?php if(count($field) == 1) $field = explode('--', $field[0]); ?>
+    <?php $i = 0; foreach ($field as $subfield): ?>
+      <?php // AK: Add a "minus" character from font-awesome to separate the single keywords in a keyword chain from each other.  ?>
+      <?=($i++ == 0) ? '' : ' <i class="fa fa-minus akKeywordChainSeparator" aria-hidden="true"></i> '?>
+      <?php $subject = trim($subject . ' ' . $subfield); ?>
+      <a title="<?=$this->escapeHtmlAttr($subject)?>" href="<?=$this->record($this->driver)->getLink('subject', $subject)?>" rel="nofollow"><?=trim($this->escapeHtml($subfield))?></a>
+    <?php endforeach; ?>
+  </div>
+<?php endforeach; ?>
