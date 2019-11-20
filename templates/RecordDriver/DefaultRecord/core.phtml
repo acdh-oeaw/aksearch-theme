@@ -32,8 +32,8 @@
     </div>
   <?php endif; ?>
   <div class="media-body">
-    <?php // AK: User "getTitle" instead of "getShortTitle". Display title sections separated by colon. ?>
-    <h3 property="name"><?=$this->escapeHtml($this->driver->getTitle() . ' : ' . $this->driver->getSubtitle() . ' : ' . $this->driver->getTitleSection())?></h3>
+    <?php // AK: Use "getWholeTitle" instead of "getShortTitle". Displays also subtitle and title section separated by colon. ?>
+    <h3 property="name"><?=$this->escapeHtml($this->driver->getWholeTitle())?></h3>
 
     <?php if(!empty($this->extraControls)): ?>
       <?=$this->extraControls['actionControls'] ?? ''?>
