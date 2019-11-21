@@ -5,6 +5,7 @@ return [
       'factories' => [
         'AkSearch\View\Helper\AkSearch\Datepicker' => 'AkSearch\View\Helper\AkSearch\DatepickerFactory',
         'AkSearch\View\Helper\Root\Auth' => 'VuFind\View\Helper\Root\AuthFactory',
+        'AkSearch\View\Helper\Root\Citation' => 'VuFind\View\Helper\Root\CitationFactory',
         'AkSearch\View\Helper\Root\Record' => 'VuFind\View\Helper\Root\RecordFactory',
         'AkSearch\View\Helper\Root\SearchBox' => 'AkSearch\View\Helper\Root\SearchBoxFactory',
         'VuFind\View\Helper\Root\RecordDataFormatter' => 'AkSearch\View\Helper\Root\RecordDataFormatterFactory'
@@ -15,7 +16,8 @@ return [
         'searchbox' => 'AkSearch\View\Helper\Root\SearchBox',
 
         // Overrides
-        'VuFind\View\Helper\Root\Record' => 'AkSearch\View\Helper\Root\Record',
+        'VuFind\View\Helper\Root\Citation' => 'AkSearch\View\Helper\Root\Citation',
+        'VuFind\View\Helper\Root\Record' => 'AkSearch\View\Helper\Root\Record'
       ]
     ],
     'js' => [
