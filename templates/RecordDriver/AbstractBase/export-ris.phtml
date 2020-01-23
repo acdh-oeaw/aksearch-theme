@@ -12,6 +12,75 @@ if (is_object($marc)) {
 }
 $journalTitle = $this->driver->tryMethod('getContainerTitle');
 $formats = $this->driver->tryMethod('getFormats');
+$bibLevel = $this->driver->tryMethod('getBibliographicLevel');
+
+var_dump($journalTitle);
+var_dump($formats);
+var_dump($bibLevel);
+$format = null;
+
+if (in_array('Printed', $formats)) {
+    // Default
+    $format = 'BOOK';
+
+    if ($bibLevel != null) {
+        switch ($bibLevel) {
+            case 'Serial':
+            case 'MultiVolume':
+                if (in_array('Journal', $formats)) {
+                    $format = 'JFULL';
+                } else if (in_array('Newspaper', $formats)) {
+                    $format = 'NEWS';
+                } else {
+                    $format = 'SER';
+                }
+                break;
+            case 'DependentLiterature':
+                $format = 'JOUR';
+                break;
+        }
+    }
+} else if (in_array('Online', $formats)) {
+    // Default
+    $format = 'EJOUR';
+
+    if ($bibLevel != null) {
+        switch ($bibLevel) {
+            case 'DependentLiterature':
+                if (in_array('Chapter', $formats) || in_array('Essay', $formats)) {
+                    $format = 'ECHAP';
+                }
+                break;
+            case 'Monographic':
+            case 'MultiVolume':
+                $format = 'EBOOK';
+                break;
+            case 'Serial':
+                if (in_array('Journal', $formats)) {
+                    $format = 'JFULL';
+                }
+                break;
+        }
+    }
+} else if (in_array('DVD', $formats)) {
+    $format = 'MPCT';
+} else if (in_array('SoundCarrier', $formats) || in_array('SoundDisc', $formats)) {
+    $format = 'SOUND';
+} else if (in_array('FilmForProjection', $formats)) {
+    $format = 'VIDEO';
+} else if (in_array('MapCard', $formats)) {
+    $format = 'MAP';
+} else if (in_array('CDROM', $formats)) {
+    $format = 'DATA';
+} else if (in_array('EBook', $formats)) {
+    $format = 'EBOOK';
+} else {
+    $format = 'GEN';
+}
+
+
+var_dump($format);
+exit;
 if ($marcProceedingsField) {
     $format = 'CONF';
 } elseif ($marcPhdField) {
