@@ -1,4 +1,6 @@
 <?php
+//header("Content-Type: text/plain");
+
 // TODO: fold this logic into record driver methods at some point:
 $marc = $this->driver->tryMethod('getMarcRecord');
 
@@ -6,7 +8,7 @@ $marc = $this->driver->tryMethod('getMarcRecord');
 exit;*/
 if (is_object($marc)) {
     $marcPhdField = $marc->getField('502');
-    $marcProceedingsField = $marc->getField('711');
+    $marcProceedingsField = $marc->getFields('[17]11', true);
 } else {
     $marcPhdField = $marcProceedingsField = false;
 }
@@ -14,15 +16,28 @@ $journalTitle = $this->driver->tryMethod('getContainerTitle');
 $formats = $this->driver->tryMethod('getFormats');
 $bibLevel = $this->driver->tryMethod('getBibliographicLevel');
 
-var_dump($journalTitle);
-var_dump($formats);
-var_dump($bibLevel);
+// Initialize format variable
 $format = null;
 
-if (in_array('Printed', $formats)) {
-    // Default
-    $format = 'BOOK';
-
+// Get the format
+if (in_array('DVD', $formats)) {
+    $format = 'MPCT';
+} else if (in_array('SoundCarrier', $formats) || in_array('SoundDisc', $formats)) {
+    $format = 'SOUND';
+} else if (in_array('FilmForProjection', $formats)) {
+    $format = 'VIDEO';
+} else if (in_array('MapCard', $formats)) {
+    $format = 'MAP';
+} else if (in_array('CDROM', $formats)) {
+    $format = 'DATA';
+} else if (in_array('EBook', $formats)) {
+    $format = 'EBOOK';
+} else if (!empty($marcProceedingsField)) {
+    $format = 'CONF';
+} else if ($marcPhdField) {
+    $format = 'THES';
+} else if (in_array('Printed', $formats)) {
+    $format = 'BOOK'; // Default
     if ($bibLevel != null) {
         switch ($bibLevel) {
             case 'Serial':
@@ -41,9 +56,7 @@ if (in_array('Printed', $formats)) {
         }
     }
 } else if (in_array('Online', $formats)) {
-    // Default
-    $format = 'EJOUR';
-
+    $format = 'EJOUR'; // Default
     if ($bibLevel != null) {
         switch ($bibLevel) {
             case 'DependentLiterature':
@@ -62,46 +75,20 @@ if (in_array('Printed', $formats)) {
                 break;
         }
     }
-} else if (in_array('DVD', $formats)) {
-    $format = 'MPCT';
-} else if (in_array('SoundCarrier', $formats) || in_array('SoundDisc', $formats)) {
-    $format = 'SOUND';
-} else if (in_array('FilmForProjection', $formats)) {
-    $format = 'VIDEO';
-} else if (in_array('MapCard', $formats)) {
-    $format = 'MAP';
-} else if (in_array('CDROM', $formats)) {
-    $format = 'DATA';
-} else if (in_array('EBook', $formats)) {
-    $format = 'EBOOK';
 } else {
+    // Fallback value "GEN" for "generic"
     $format = 'GEN';
-}
-
-
-var_dump($format);
-exit;
-if ($marcProceedingsField) {
-    $format = 'CONF';
-} elseif ($marcPhdField) {
-    $format = 'THES';
-} elseif (!empty($journalTitle) || (is_array($formats) && in_array('Article', $formats))) {
-    $format = 'JOUR';
-} elseif (is_array($formats) && in_array('Journal', $formats)) {
-    $format = 'JFULL';
-} else {
-    $format = 'BOOK';
 }
 
 // Type
 echo 'TY  - ' . $format . "\r\n";
 
-$title = rtrim($this->driver->getTitle(), " /");
+$title = rtrim($this->driver->getWholeTitle(), " /");
 if (!empty($title)) {
     echo 'TI  - ' . "$title\r\n";
 }
 
-if (!empty($journalTitle)) {
+if ($format == 'JOUR' || $format == 'EJOUR') {
     if (empty($title)) {
         echo 'TI  - ' . "$journalTitle\r\n";
     } else {
