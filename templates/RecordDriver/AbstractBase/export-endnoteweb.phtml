@@ -163,21 +163,9 @@ if (is_array($genres)) {
     }
 }
 
-/*
 $subjects = $this->driver->tryMethod('getAllSubjects');
 if (is_array($subjects)) {
     foreach ($subjects as $subject) {
-        echo 'KW  - ' . "$subject\r\n";
-    }
-}
-*/
-
-print_r($this->driver->tryMethod('getAllSubjects'));
-
-$subjects = $this->driver->tryMethod('getAllSubjectHeadings');
-if (is_array($subjects)) {
-    foreach ($subjects as $subject) {
-        $subject = is_array($subject) ? implode(' : ', $subject) : $subject;
         echo 'KW  - ' . "$subject\r\n";
     }
 }
@@ -245,10 +233,9 @@ if (!empty($urls)) {
 	foreach ($urls as $urlArray) {
         $url = $urlArray['url'];
         
-        /*
-        // These would be the values according to the RIS entry on english Wikipedia.
-        // As Zotero (a very popular citation management software) does not use these
-        // fields, we add all possible URLs as "L1" elements (see below).
+        // These are the values according to the RIS entry on english Wikipedia. We
+        // use another code for the RIS export (see below). For EndNoteWeb, we stick
+        // with these codes.
         $desc = $urlArray['desc'];
         $mime = $urlArray['mime'];
         if (preg_match('/Volltext|Fulltext/', $desc)) {
@@ -260,12 +247,11 @@ if (!empty($urls)) {
 		} else {
             echo 'UR  - ' . "$url\r\n";
         }
-        */
-
+        
         // URLs for Zotero. In Zotero, only one "UR" element is allowed, so all other
         // URLs would get lost. We export all other URLs as "L1" elements as in
         // Zotero these are URL attachments.
-        echo 'L1  - ' . "$url\r\n";
+        //echo 'L1  - ' . "$url\r\n";
 	}
 }
 
