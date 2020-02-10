@@ -6,14 +6,16 @@ $procNotes = array_merge(
 );
 $dissNotes = $this->driver->tryMethod('getDissertationNotes');
 
-// A driver-specific template may pass in format overrides; check for these before going to the driver itself:
-$formats = isset($this->overrideFormats) ? $this->overrideFormats : $this->driver->tryMethod('getFormats');
+// A driver-specific template may pass in format overrides; check for these before
+// going to the driver itself:
+$formats = isset($this->overrideFormats) ? $this->overrideFormats :
+    $this->driver->tryMethod('getFormats');
 
 // Initialize format variable
 $format = null;
 
+// Get the format of the current record
 if (is_array($formats) && !empty($formats)) {
-    // Get the format
     if (
         in_array('VideoDisc', $formats) ||
         in_array('AudioDisc', $formats) ||
@@ -46,8 +48,8 @@ if (is_array($formats) && !empty($formats)) {
         ) {
         $format = 'Serial Publication';
     } else if (in_array('DependentLiteratureUnmediated', $formats)) {
-        // TODO: AK: For chapters and essays, use "Book Section". Use "Journal Article"
-        //           only for articles!
+        // TODO: AK: For chapters and essays, use "Book Section".
+        //           Use "Journal Article" only for articles!
         $format = 'Journal Article';
     } else if (in_array('DependentLiteratureOnline', $formats)) {
         $format = 'Electronic Article';
@@ -104,7 +106,8 @@ if (is_array($pubPlaces) && is_array($pubDates) && is_array($pubNames)) {
             echo "%D $date\n";
         }
         if (isset($pubPlaces[$i])) {
-            echo "%C " . rtrim(str_replace(['[', ']'], '', $pubPlaces[$i]), ': ') . "\n";
+            echo "%C " . rtrim(str_replace(['[', ']'], '', $pubPlaces[$i]), ': ') .
+                "\n";
         }
     }
 }

@@ -1,30 +1,23 @@
 <?php
-/*
-// A driver-specific template may pass in format overrides; check for these before going to the driver itself:
-$formats = isset($this->overrideFormats) ? $this->overrideFormats : $this->driver->tryMethod('getFormats');
-if (is_array($formats) && !empty($formats)) {
-    foreach ($formats as $format) {
-        echo "RT $format\n";
-    }
-} else {
-    echo "RT Generic\n";
-}
-*/
-
+// Check for conference proceeding notes and disseration notes
 $procNotes = array_merge(
     $this->driver->tryMethod('getPrimaryMeetingNames'),
     $this->driver->tryMethod('getSecondaryMeetingNames')
 );
 $dissNotes = $this->driver->tryMethod('getDissertationNotes');
-$formats = $this->driver->tryMethod('getFormats');
+
+// A driver-specific template may pass in format overrides; check for these before
+// going to the driver itself:
+$formats = isset($this->overrideFormats) ? $this->overrideFormats :
+    $this->driver->tryMethod('getFormats');
 
 // Initialize format variable
 $format = null;
 
-// Get the format
+// Get the format of the current record
 if (is_array($formats) && !empty($formats)) {
     if (in_array('VideoDisc', $formats)) {
-        $format = 'Video/DVD';
+        $format = 'Video/ DVD';
     } else if (in_array('Cartographic', $formats)) {
         $format = 'Map';
     } else if (in_array('CdRom', $formats)) {
@@ -56,8 +49,8 @@ if (is_array($formats) && !empty($formats)) {
         in_array('DependentLiteratureUnmediated', $formats) ||
         in_array('DependentLiteratureOnline', $formats)
         ) {
-        // TODO: AK: For chapters and essays, use "Book, Section". Use "Journal Article"
-        //           only for articles.
+        // TODO: AK: For chapters and essays, use "Book, Section".
+        //           Use "Journal Article" only for articles.
         $format = 'Journal Article';
     } else if (
         in_array('AudioDisc', $formats) ||
@@ -74,6 +67,24 @@ if (is_array($formats) && !empty($formats)) {
     }
 } else {
     $format = 'Generic';
+}
+
+if (
+    in_array('BookOnline', $formats) ||
+    in_array('SeriesOnline', $formats) ||
+    in_array('MultiVolumeOnline', $formats) ||
+    in_array('JournalOnline', $formats) ||
+    in_array('NewspaperOnline', $formats) ||
+    in_array('DependentLiteratureOnline', $formats)
+) {
+    echo "SR Electronic(1)\n";
+} else if (
+    in_array('BookUnmediated', $formats) ||
+    in_array('SeriesUnmediated', $formats) ||
+    in_array('MultiVolumeUnmediated', $formats) ||
+    in_array('DependentLiteratureUnmediated', $formats)
+) {
+    echo "SR Print(0)\n";
 }
 
 echo "RT $format\n";
@@ -167,27 +178,16 @@ if (!empty($edition)) {
 
 echo "UL " . $this->serverUrl($this->recordLink()->getUrl($this->driver)) . "\n";
 
+foreach ($this->record($this->driver)->getUrlList() as $url) {
+    echo "LK $url\n";
+}
+
 $contentSummaries = $this->driver->tryMethod('getContentSummaries');
 if (is_array($contentSummaries)) {
     foreach ($contentSummaries as $current) {
         echo "AB $current\n";
     }
 }
-
-/*
-AK: For libraries in german speaking countries this is probably too hackery for
-    getting the page count.
-// Try to find a page count in the physical description:
-$physical = $this->driver->tryMethod('getPhysicalDescriptions');
-if (is_array($physical)) {
-    foreach ($physical as $current) {
-        if (preg_match('/([0-9]+)\s*p/', $current, $matches)) {
-            echo "OP {$matches[1]}\n";
-            break;
-        }
-    }
-}
-*/
 
 $notes = $this->driver->tryMethod('getGeneralNotes');
 if (is_array($notes)) {
@@ -208,7 +208,6 @@ if (is_array($isbns)) {
     }
 }
 
-// AK: Added ISSNs
 $issns = $this->driver->tryMethod('getISSNs');
 if (is_array($issns)) {
     foreach ($issns as $issn) {
@@ -216,7 +215,7 @@ if (is_array($issns)) {
     }
 }
 
-$subjects = $this->driver->tryMethod('getAllSubjectHeadings');
+$subjects = $this->driver->tryMethod('getAllSubjects');
 if (is_array($subjects)) {
     foreach ($subjects as $subject) {
         $subject = is_array($subject) ? implode(' : ', $subject) : $subject;
@@ -227,6 +226,9 @@ if (is_array($subjects)) {
 if ($doi = $this->driver->tryMethod('getCleanDOI')) {
     echo "DO $doi\n";
 }
+
+echo "WT AKsearch\n";
+echo "A6 AK Bibliothek Wien für Sozialwissenschaften\n";
 
 // Record separator:
 echo "\n";
