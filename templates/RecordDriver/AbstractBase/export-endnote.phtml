@@ -1,9 +1,6 @@
 <?php
 // Check for conference proceeding notes and disseration notes
-$procNotes = array_merge(
-    $this->driver->tryMethod('getPrimaryMeetingNames'),
-    $this->driver->tryMethod('getSecondaryMeetingNames')
-);
+$procNotes = $this->driver->tryMethod('getMeetingNames');
 $dissNotes = $this->driver->tryMethod('getDissertationNotes');
 
 // A driver-specific template may pass in format overrides; check for these before
@@ -69,15 +66,15 @@ if (is_array($formats) && !empty($formats)) {
 // Type
 echo "%0 $format\n";
 
-$author = $this->driver->tryMethod('getPrimaryAuthorWithoutDate') ??
-    $this->driver->tryMethod('getPrimaryCorporateAuthorWithoutDate') ??
+$author = $this->driver->tryMethod('getPrimaryAuthor') ??
+    $this->driver->tryMethod('getCorporateAuthor') ??
     null;
 if (!empty($author)) {
     echo "%A $author\n";
 }
 
-$secondaryAuthors = $this->driver->tryMethod('getSecondaryAuthorsWithoutDate') ?:
-    $this->driver->tryMethod('getSecondaryCorporateAuthorsWithoutDate') ?:
+$secondaryAuthors = $this->driver->tryMethod('getSecondaryAuthors') ?:
+    $this->driver->tryMethod('getSecondaryCorporateAuthors') ?:
     null;
 if (is_array($secondaryAuthors)) {
     foreach ($secondaryAuthors as $current) {

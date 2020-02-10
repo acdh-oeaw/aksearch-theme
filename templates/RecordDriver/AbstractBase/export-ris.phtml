@@ -1,9 +1,6 @@
 <?php
 // Check for conference proceeding notes and disseration notes
-$procNotes = array_merge(
-    $this->driver->tryMethod('getPrimaryMeetingNames'),
-    $this->driver->tryMethod('getSecondaryMeetingNames')
-);
+$procNotes = $this->driver->tryMethod('getMeetingNames');
 $dissNotes = $this->driver->tryMethod('getDissertationNotes');
 
 // Get formats
@@ -109,15 +106,15 @@ if (!$containerTitle) {
     }
 }
 
-$author = $this->driver->tryMethod('getPrimaryAuthorWithoutDate') ??
-    $this->driver->tryMethod('getPrimaryCorporateAuthorWithoutDate') ??
+$author = $this->driver->tryMethod('getPrimaryAuthor') ??
+    $this->driver->tryMethod('getCorporateAuthor') ??
     null;
 if (!empty($author)) {
     echo 'A1  - ' . "$author\r\n";
 }
 
-$secondaryAuthors = $this->driver->tryMethod('getSecondaryAuthorsWithoutDate') ?:
-$this->driver->tryMethod('getSecondaryCorporateAuthorsWithoutDate') ?:
+$secondaryAuthors = $this->driver->tryMethod('getSecondaryAuthors') ?:
+$this->driver->tryMethod('getSecondaryCorporateAuthors') ?:
 null;
 if (is_array($secondaryAuthors)) {
     foreach ($secondaryAuthors as $current) {
