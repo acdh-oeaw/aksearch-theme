@@ -1,0 +1,10 @@
+<?php if (!empty($data)): ?>
+  <?php foreach ($data as $authId => $name): ?>
+    <span class="author-data" property="<?=$this->escapeHtml($this->transEsc($role))?>">
+      <a href="<?=$this->record($this->driver)->getLink('author', $name)?>">
+        <?=$this->escapeHtml($name)?>
+      </a>
+    </span>
+    <br />
+  <?php endforeach; ?>
+<?php endif; ?>
