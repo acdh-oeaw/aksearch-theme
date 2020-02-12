@@ -1,0 +1,50 @@
+<?php
+$childs = $this->tab->getChilds();
+//var_dump($childs);
+$hasYears = empty(array_filter(array_column($childs, 'pubYear'))) ? false : true;
+$hasEditions = empty(array_filter(array_column($childs, 'edition'))) ? false : true;
+$hasVols = empty(array_filter(array_column($childs, 'volNo'))) ? false : true;
+?>
+<h3><?=$this->transEsc('includes_child_records')?></h3>
+<table class="table table-striped">
+    <tr>
+        <th width="70%"><?=$this->transEsc('Title')?></th>
+        <?php if ($hasYears): ?>
+            <th style="white-space: nowrap;"><?=$this->transEsc('year')?></th>
+        <?php endif; ?>
+        <?php if ($hasEditions): ?>
+            <th style="white-space: nowrap;"><?=$this->transEsc('Edition')?></th>
+        <?php endif; ?>
+        <?php if ($hasVols): ?>
+            <th style="white-space: nowrap;"><?=$this->transEsc('volume')?></th>
+        <?php endif; ?>
+    </tr>
+    <?php foreach ($childs as $i => $child): ?>
+        <tr>
+            <td>
+                <a href="<?=$this->recordLink()->getUrl($child['id'])?>">
+                    <?=$this->escapeHtml($child['title'])?>
+                </a>
+            </td>
+            <?php if ($hasYears): ?>
+                <td>
+                    <?=$this->escapeHtml($child['pubYear'])?>
+                </td>
+            <?php endif; ?>
+            <?php if ($hasEditions): ?>
+                <td>
+                    <?=$this->escapeHtml($child['edition'])?>
+                </td>
+            <?php endif; ?>
+            <?php if ($hasVols): ?>
+                <td>
+                    <?=$this->escapeHtml($child['volNo'])?>
+                </td>
+            <?php endif; ?>
+        </tr>    
+    <?php endforeach; ?>
+
+</table>
+
+
+
