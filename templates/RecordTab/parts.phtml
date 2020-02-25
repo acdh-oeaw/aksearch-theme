@@ -1,50 +1,100 @@
 <?php
-$childs = $this->tab->getChilds();
-//var_dump($childs);
-$hasYears = empty(array_filter(array_column($childs, 'pubYear'))) ? false : true;
-$hasEditions = empty(array_filter(array_column($childs, 'edition'))) ? false : true;
-$hasVols = empty(array_filter(array_column($childs, 'volNo'))) ? false : true;
+$levelCounter = 0;
 ?>
-<h3><?=$this->transEsc('includes_child_records')?></h3>
-<table class="table table-striped">
-    <tr>
-        <th width="70%"><?=$this->transEsc('Title')?></th>
-        <?php if ($hasYears): ?>
-            <th style="white-space: nowrap;"><?=$this->transEsc('year')?></th>
-        <?php endif; ?>
-        <?php if ($hasEditions): ?>
-            <th style="white-space: nowrap;"><?=$this->transEsc('Edition')?></th>
-        <?php endif; ?>
-        <?php if ($hasVols): ?>
-            <th style="white-space: nowrap;"><?=$this->transEsc('volume')?></th>
-        <?php endif; ?>
-    </tr>
-    <?php foreach ($childs as $i => $child): ?>
-        <tr>
-            <td>
-                <a href="<?=$this->recordLink()->getUrl($child['id'])?>">
-                    <?=$this->escapeHtml($child['title'])?>
-                </a>
-            </td>
-            <?php if ($hasYears): ?>
-                <td>
-                    <?=$this->escapeHtml($child['pubYear'])?>
-                </td>
-            <?php endif; ?>
-            <?php if ($hasEditions): ?>
-                <td>
-                    <?=$this->escapeHtml($child['edition'])?>
-                </td>
-            <?php endif; ?>
-            <?php if ($hasVols): ?>
-                <td>
-                    <?=$this->escapeHtml($child['volNo'])?>
-                </td>
-            <?php endif; ?>
-        </tr>    
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
+    <?php foreach ($childsGroupedByLevel = $this->tab->getChilds() as $level => $childs): ?>
+        <?php
+        // Increase level counter. This is for opening the first collapsible
+        // initially and keeping the other ones closed.
+        $levelCounter++;
+
+        // Classes and data values for the first collapsible that should initially be
+        // opened.
+        $inClass = ($levelCounter == 1) ? 'in' : '';
+        $ariaExpanded = ($levelCounter == 1) ? 'true' : 'false';
+
+        // Get some data
+        $hasYears = empty(array_filter(array_column($childs, 'pubYear'))) ? false : true;
+        $hasEditions = empty(array_filter(array_column($childs, 'edition'))) ? false : true;
+        $hasVols = empty(array_filter(array_column($childs, 'volNo'))) ? false : true;
+        $hasIssues = empty(array_filter(array_column($childs, 'issNo'))) ? false : true;
+        $hasPgs = empty(array_filter(array_column($childs, 'pgNos'))) ? false : true;
+
+        // Hash the level value because it could contain special characters which
+        // would break functionality. Prefix with "id" as IDs should not start with a
+        // digit.
+        $levelHash = 'id'.md5($this->transEsc($level));
+        ?>
+
+        <?php // Create collapsible panels ?>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="heading<?=$levelHash?>" data-toggle="collapse" data-target="#collapse<?=$levelHash?>" aria-expanded="<?=$ariaExpanded?>" aria-controls="collapse<?=$levelHash?>">
+                <h3 class="panel-title">
+                    <a role="button"><?=$this->transEsc('includes_child_records_of_type')?> "<?=$this->transEsc($level)?>"</a>
+                </h3>
+            </div>
+            <div id="collapse<?=$levelHash?>" class="panel-collapse collapse <?=$inClass?>" role="tabpanel" aria-labelledby="heading<?=$levelHash?>">
+                <div class="panel-body" style="padding: 0; padding-top: 15px;">
+                    <table class="table">
+                        <tr>
+                            <th width="70%"><?=$this->transEsc('Title')?></th>
+                            <?php if ($hasYears): ?>
+                                <th style="white-space: nowrap;"><?=$this->transEsc('year')?></th>
+                            <?php endif; ?>
+                            <?php if ($hasEditions): ?>
+                                <th style="white-space: nowrap;"><?=$this->transEsc('Edition')?></th>
+                            <?php endif; ?>
+                            <?php if ($hasVols): ?>
+                                <th style="white-space: nowrap;"><?=$this->transEsc('volume')?></th>
+                            <?php endif; ?>
+                            <?php if ($hasIssues): ?>
+                                <th style="white-space: nowrap;"><?=$this->transEsc('Issue')?></th>
+                            <?php endif; ?>
+                            <?php if ($hasPgs): ?>
+                                <th style="white-space: nowrap;"><?=$this->transEsc('pages')?></th>
+                            <?php endif; ?>
+                        </tr>
+                        <?php foreach ($childs as $i => $child): ?>
+                            <tr>
+                                <td>
+                                    <a href="<?=$this->recordLink()->getUrl($child['id'])?>">
+                                        <?=$this->escapeHtml($child['title'])?>
+                                    </a>
+                                </td>
+                                <?php if ($hasYears): ?>
+                                    <td>
+                                        <?=$this->escapeHtml($child['pubYear'])?>
+                                    </td>
+                                <?php endif; ?>
+                                <?php if ($hasEditions): ?>
+                                    <td>
+                                        <?=$this->escapeHtml($child['edition'])?>
+                                    </td>
+                                <?php endif; ?>
+                                <?php if ($hasVols): ?>
+                                    <td>
+                                        <?=$this->escapeHtml($child['volNo'])?>
+                                    </td>
+                                <?php endif; ?>
+
+                                <?php if ($hasIssues): ?>
+                                    <td>
+                                        <?=$this->escapeHtml($child['issNo'])?>
+                                    </td>
+                                <?php endif; ?>
+                                <?php if ($hasPgs): ?>
+                                    <td>
+                                        <?=$this->escapeHtml($child['pgNos'])?>
+                                    </td>
+                                <?php endif; ?>
+
+                            </tr>    
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     <?php endforeach; ?>
-
-</table>
-
-
-
+</div>
