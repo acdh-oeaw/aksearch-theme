@@ -139,7 +139,6 @@ header .search.container.navbar {
     background-color: white;
 }
 
-
 // Matomo Opt-Out iFrame on privacy page
 #matomoOptOut {
     border: grey thin solid;
@@ -181,6 +180,25 @@ header .search.container.navbar {
 .subject-line:not(:last-child) {
     margin-bottom: 18px;
 }
+
+// Adding "open" and "close" arrows to the collapsible panels in the
+// "child records" tab of the record detail view. They change their direction
+// if the panel is closed or opened.
+.panel-heading .accordion-toggle:after {
+    font-family: "FontAwesome";
+    content: "\f077";
+    float: right;
+    color: #555;
+}
+.panel-heading.collapsed .accordion-toggle:after {
+    content: "\f078";
+}
+
+.child-records-table {
+    padding-right: 8px;
+    padding-left: 8px;
+}
+
 
 // Style for other screen sizes
 @media (min-width:768px) {
