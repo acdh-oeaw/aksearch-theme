@@ -21,6 +21,7 @@
         ];
         $offlineMode = 'ils-offline';
     }
+
     // Set page title.
     $this->headTitle($this->translate('Holdings') . ': ' . $this->driver->getBreadcrumb());
 ?>
@@ -135,4 +136,31 @@
       <tr><td><?=$this->escapeHtml($row['issue'])?></td></tr>
     <?php endforeach; ?>
   </table>
+<?php endif; ?>
+
+<?php // AK: Check if there are no holdings or URLs ?>
+<?php if (empty($holdings['holdings']) && empty($urls)): ?>
+  <?php // AK: If we have parent records, show a note and a link to a parent (if possible) ?>
+  <?php if ($this->tab->hasParents() && $parents = $this->tab->getParents()): ?>
+    <h4><?=$this->transEsc('IntegratedInOtherHolding')?></h4>
+    <?php foreach ($parents as $key => $value):
+      $containerSource = $this->driver->getSourceIdentifier();
+    ?>
+      <?php if ($id = $value['id']) : ?>
+        <a href="<?=$this->recordLink()->getUrl("$containerSource|$id")?>">
+          <?=$this->escapeHtml($value['title'])?>
+        </a>
+      <?php else: ?>
+        <?=$this->escapeHtml($value['title'])?>
+      <?php endif; ?>
+      <?php if ($volNo = $value['volNo']): ?>
+        <?=' ('.$this->escapeHtml($value['volNo']).')'?> 
+      <?php endif; ?>
+      <br />
+    <?php endforeach; ?>
+  <?php else: ?>
+    <?php // AK: Show information that there are absolutely no holdings ?>
+    <h3><?=$this->transEsc('NoHoldingsExist')?></h3>
+  <?php endif; ?>
+  
 <?php endif; ?>
