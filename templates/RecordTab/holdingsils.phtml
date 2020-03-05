@@ -142,7 +142,7 @@
 <?php if (empty($holdings['holdings']) && empty($urls)): ?>
   <?php // AK: If we have parent records, show a note and a link to a parent (if possible) ?>
   <?php if ($this->tab->hasParents() && $parents = $this->tab->getParents()): ?>
-    <h4><?=$this->transEsc('IntegratedInOtherHolding')?></h4>
+    <h4><?=$this->transEsc('IntegratedInParentHolding')?></h4>
     <?php foreach ($parents as $key => $value):
       $containerSource = $this->driver->getSourceIdentifier();
     ?>
@@ -158,6 +158,11 @@
       <?php endif; ?>
       <br />
     <?php endforeach; ?>
+  <?php elseif ($this->tab->hasChilds()): ?>
+    <h4><?=$this->transEsc('IntegratedInChildHolding')?></h4>
+    <a href="<?=$this->recordLink()->getTabUrl($this->driver, 'Parts')?>">
+      <?=$this->transEsc('child_records')?>
+    </a>
   <?php else: ?>
     <?php // AK: Show information that there are absolutely no holdings ?>
     <h3><?=$this->transEsc('NoHoldingsExist')?></h3>
