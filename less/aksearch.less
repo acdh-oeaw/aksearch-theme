@@ -4,7 +4,6 @@
 // Global textual link color variable
 @link-color: #1079a5;
 
-
 .navbar-brand {
     height: auto; // Making space for AKsearch Logo
     padding-left: 0; // Align AKsearch Logo with Search field
@@ -20,8 +19,8 @@
     left: 50%;
     position: relative;
 
-    /* Fix left margin in one line - maybe not supported by all Browsers
-    margin-left: calc(~"50% - 50vw"); */
+    // Fix left margin in one line - maybe not supported by all Browsers
+    // margin-left: calc(~"50% - 50vw");
 }
 
 #searchForm {
@@ -49,8 +48,8 @@ header .search.container.navbar {
     border: none;
 }
 
-/* Adding a space between the breadcrumb bar and the main content of the page for better styling.
-   See div in layout.phtml */
+// Adding a space between the breadcrumb bar and the main content of the page for better styling.
+// See div in layout.phtml
 .akBreadcrumbSpacer {
     margin-bottom: 15px;
 }
@@ -95,8 +94,67 @@ header .search.container.navbar {
 	padding: 0px 6px 6px 6px;
 }
 
-.table {
+// Makes table content in record detail view align left. This gives us more
+// space for displaying the information of a record.
+.core-details .table {
     table-layout: auto;
+}
+
+// A margin for the "holdings ILS" tab in the record detail view.
+.holdings {
+    margin-bottom: 35px;
+}
+
+// This gives us a better table layout in the "holdings ILS" tab in the record
+// detail view.
+.holdings .table {
+    table-layout: fixed;
+}
+
+// Padding of the first column of the tables in the "holdings ILS" tab of the
+// record detail view. This gives some indentation so that it is clear the the
+// table content is subordinated in relation to the heading.
+.holdings .table th:first-child, .holdings .table td:first-child {
+    padding-left: 15px;
+}
+
+// Bold font for the headings of the tables in the "holdings ILS" tab
+.holdings h3 {
+    font-weight: bold;
+}
+
+// Bottom margin for for the headings of the tables in the "holdings ILS" tab,
+// but not for all of them (not .urls and .noHoldings) as for them, it would
+// disturb the layout.
+.holdings:not(.urls):not(.noHoldings) h3 {
+    margin-bottom: 20px;
+}
+
+// Padding and font size for h4 (location names) in the "holdings ILS" tab, but
+// not if there are no holdings.
+.holdings:not(.noHoldings) h4 {
+    padding-left: 15px;
+    font-size: 17px;
+}
+
+// Padding for item notes in the tables of the "holdings ILS" tab
+.item-notes ul {
+	padding-left: 1rem;
+}
+
+// Layout for "login", "place a hold" and "recall this" buttons in the tables of the
+// "holdings ILS" tab .
+.holIlsBtn {
+	font-weight: bold;
+	color: #fff;
+	background-color: #333;
+	border-color: #e0e0e0;
+}
+.holIlsBtn:hover, .holIlsBtn:focus, .holIlsBtn:active {
+	background-color: #be0021;
+	border-color: #333;
+	color: #fff;
+	outline: none;
 }
 
 // Styling search button
@@ -198,6 +256,8 @@ header .search.container.navbar {
     content: "\f078";
 }
 
+// Some padding for the tables in the "child records" tab of the record
+// detail view
 .child-records-table {
     padding-right: 8px;
     padding-left: 8px;
