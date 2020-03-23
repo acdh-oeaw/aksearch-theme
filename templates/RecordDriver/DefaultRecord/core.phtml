@@ -1,3 +1,4 @@
+<?php $this->metadata()->generateMetatags($this->driver);?>
 <div class="media" vocab="http://schema.org/" resource="#record" typeof="<?=$this->driver->getSchemaOrgFormats()?> Product">
   <?php
     $QRCode = $this->record($this->driver)->getQRCode("core");
@@ -31,10 +32,10 @@
       <?php endif; ?>
     </div>
   <?php endif; ?>
+  <?php // AK: Add class for better styling possiblities ?>
   <div class="media-body core-details">
     <?php // AK: Use "getWholeTitle" instead of "getShortTitle". Displays also subtitle and title section separated by colon. ?>
     <h3 property="name"><?=$this->escapeHtml($this->driver->getWholeTitle())?></h3>
-
     <?php if(!empty($this->extraControls)): ?>
       <?=$this->extraControls['actionControls'] ?? ''?>
       <?=$this->extraControls['availabilityInfo'] ?? ''?>
@@ -81,7 +82,6 @@
             <tr><th><?=$this->transEsc($current['label'])?>:</th><td><?=$current['value']?></td></tr>
           <?php endif; ?>
         <?php endforeach; ?>
-
       </table>
     <?php endif; ?>
     <?php /* End Main Details */ ?>

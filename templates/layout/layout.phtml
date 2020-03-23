@@ -183,7 +183,7 @@ JS;
         <?php endif; ?>
       </div>
 
-      <!-- AK: Adding a div for adding a space between the breadcrumb bar and the main content for better layout. -->
+      <?php // AK: Adding a div for adding a space between the breadcrumb bar and the main content for better layout. ?>
       <?php if((!isset($this->layout()->showBreadcrumbs) || $this->layout()->showBreadcrumbs == true)
           && !empty($this->layout()->breadcrumbs)
           && $this->layout()->breadcrumbs !== false

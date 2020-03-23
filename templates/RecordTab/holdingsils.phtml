@@ -1,5 +1,5 @@
 <?php
-    // Use custom "checkRequestIsValid" function as we use another button layout
+    // AK: Use custom "checkRequestIsValid" function as we use another button layout
     // with out the fontawesome "flag" icon.
     $this->headScript()->appendFile("checkRequestIsValid.js");
 
@@ -15,14 +15,15 @@
     $offlineMode = $this->ils()->getOfflineMode();
     
     try {
-        // TODO: What about the setting holdings_text_fields in config.ini? Does or 
-        // should that have an effect on our customizations here, mainly on the table
-        // that displays the holdings further down?
+        // TODO: AK: What about the setting holdings_text_fields in config.ini? Does 
+        // or should that have an effect on our customizations here, mainly on the
+        // table that displays the holdings further down?
         $holdings = $this->driver->getRealTimeHoldings();
     } catch (\VuFind\Exception\ILS $e) {
         $holdings = [
           'holdings' => [],
-          //'summarizedHoldings' => [],
+          // AK: Adding summarized holdings
+          'summarizedHoldings' => [],
           'electronic_holdings' => [],
           'total' => 0,
           'page' => 0,
@@ -31,7 +32,7 @@
         $offlineMode = 'ils-offline';
     }
 
-    // Get (and in consequence show) summarized holdings only if we are on first page
+    // AK: Get (and in consequence show) summarized holdings only if we are on first page
     if (!isset($holdings['page']) || $holdings['page'] <= 1) {
       $holdings['summarizedHoldings'] = $this->tab->getSummarizedHoldings();
     }
@@ -52,7 +53,7 @@
 <?=($offlineMode == "ils-offline") ? $this->render('Helpers/ils-offline.phtml', ['offlineModeMsg' => 'ils_offline_holdings_message']) : ''?>
 
 <!--
-  TODO: This renders the link with the text "Eine Anfrage zu einem allgemeinen Titel aufgeben" on top of the
+  TODO: AK: This renders the link with the text "Eine Anfrage zu einem allgemeinen Titel aufgeben" on top of the
 holdings ils tab which is confusing to our users. We render a button for each item that just does the same as this link.
 PROBLEM: Rendering the button for each item calls the API too often. We would just need one API call.
 SOLUTION: Render the button here, copy it and add it to every line further down.
@@ -80,6 +81,14 @@ EXAMPLE RECORD ID: 990004579100203343
   </div>
 <?php endif; ?>
 
+<?php // Show electronic holdings ?>
+<?php if (!empty($holdings['electronic_holdings'])): ?>
+  <?=$this->context($this)->renderInContext(
+      'RecordTab/holdingsils/electronic.phtml',
+      ['holdings' => $holdings['electronic_holdings']]
+  );?>
+<?php endif; ?>
+
 <?php // AK: Show summarized holdings ?>
 <?php if (isset($holdings['summarizedHoldings']) && $holdings['summarizedHoldings']): ?>
   <div class='holdings'>
@@ -89,15 +98,15 @@ EXAMPLE RECORD ID: 990004579100203343
       <h4><?=$locationName?></h4>
       <table class="table">
       <?php
-        // Get the holings data from the array
+        // AK: Get the holings data from the array
         $sumHoldingData = $sumHolsOfLocation['holdings'];
 
-        // Get string data
+        // AK: Get string data
         $callNos = implode(', ', array_filter(array_column($sumHoldingData, 'callnumber')));
         $holdingsAvailable = implode(', ', array_filter(array_column($sumHoldingData, 'holdings_available')));
         $holdingsPrefix = implode(', ', array_filter(array_column($sumHoldingData, 'holdings_prefix')));
 
-        // Get subarray data
+        // AK: Get subarray data
         $gaps = [];
         $callnumberNotes = [];
         $holdingsNotes = [];
@@ -119,7 +128,7 @@ EXAMPLE RECORD ID: 990004579100203343
           }
         }
 
-        // Transform subarray data to string
+        // AK: Transform subarray data to string
         $gaps = implode(', ', array_filter($gaps));
         $callnumberNotes = implode(', ', array_filter($callnumberNotes));
         $holdingsNotes = implode(', ', array_filter($holdingsNotes));
@@ -162,15 +171,15 @@ EXAMPLE RECORD ID: 990004579100203343
 <?php // ILS holdings ?>
 <?php if (isset($holdings['holdings']) && $holdings['holdings']): ?>
   <?php
-  // Some translations
+  // AK: Some translations
   $checkHold = $this->transEsc("Check Hold");
   $placeAHold = $this->transEsc("Place a Hold");
   $recallThis = $this->transEsc("Recall This");
 
-  // Create login button. There is no need to render it for each single item. We just use this "copy".
+  // AK: Create login button. There is no need to render it for each single item. We just use this "copy".
   $loginBtn = '<a href="'.$this->recordLink()->getTabUrl($this->driver, 'Holdings', ['login' => 'true', 'catalogLogin' => 'true']).'" data-lightbox class="btn holIlsBtn" title="'.$this->transEsc('Login').'">'.$this->transEsc("Login").'</a>';
   
-  // If we use title level holds, call some functions that are necessary for rendering the button.
+  // AK: If we use title level holds, call some functions that are necessary for rendering the button.
   // There is no need to call them for each single item. We just use these "copies".
   $useTitleLevelHol = false;
   if (!empty($holdingTitleHold = $this->driver->tryMethod('getRealTimeTitleHold'))) {
@@ -377,7 +386,7 @@ EXAMPLE RECORD ID: 990004579100203343
       </table>
 
     <?php endforeach; ?>
-    <?php if ($paginator = $this->tab->getPaginator($holdings['total'], $holdings['page'], $holdings['itemLimit'])): ?>
+    <?php if (!empty($holdings['total']) && $paginator = $this->tab->getPaginator($holdings['total'], $holdings['page'], $holdings['itemLimit'])): ?>
       <?=$this->paginationControl($paginator, 'Sliding', 'Helpers/pagination.phtml', ['page' => $holdings['page']])?>
     <?php endif; ?>
     <?php $history = $this->driver->getRealTimeHistory(); ?>

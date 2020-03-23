@@ -1,9 +1,8 @@
 /**
  * AK: Changed only function "_formSubmit = function formSubmit(event)". Instead of
- *     the jQuery function "serializeArray()", the FormData is used. This enables the
- *     upload of files via AJAX in a lightbox.
- *     This is important for being able to send e-mail file attachments from the new
- *     user registration form.
+ * the jQuery function "serializeArray()", the FormData is used. This enables the
+ * upload of files via AJAX in a lightbox. This is important for being able to send
+ * e-mail file attachments from the new user registration form.
  */
 /*global recaptchaOnLoad, resetCaptcha, VuFind */
 VuFind.register('lightbox', function Lightbox() {
@@ -152,7 +151,11 @@ VuFind.register('lightbox', function Lightbox() {
       .done(function lbAjaxDone(content, status, jq_xhr) {
         var errorMsgs = [];
         var flashMessages = [];
-        if (jq_xhr.status !== 205) {
+        if (jq_xhr.status === 204) {
+          // No content, close lightbox
+          close();
+          return;
+        } else if (jq_xhr.status !== 205) {
           var testDiv = $('<div/>').html(content);
           errorMsgs = testDiv.find('.flash-message.alert-danger:not([data-lightbox-ignore])');
           flashMessages = testDiv.find('.flash-message:not([data-lightbox-ignore])');
@@ -242,10 +245,16 @@ VuFind.register('lightbox', function Lightbox() {
    * data-lightbox-title = Lightbox title (overrides any title the page provides)
    */
   _constrainLink = function constrainLink(event) {
-    if (typeof $(this).data('lightboxIgnore') != 'undefined'
-      || typeof this.attributes.href === 'undefined'
-      || this.attributes.href.value.charAt(0) === '#'
-      || this.href.match(/^[a-zA-Z]+:[^/]/) // ignore resource identifiers (mailto:, tel:, etc.)
+    var $link = $(this);
+    if (typeof $link.data("lightboxIgnore") != "undefined"
+      || typeof $link.attr("href") === "undefined"
+      || $link.attr("href").charAt(0) === "#"
+      || $link.attr("href").match(/^[a-zA-Z]+:[^/]/) // ignore resource identifiers (mailto:, tel:, etc.)
+      || (typeof $link.attr("target") !== "undefined"
+        && (
+          $link.attr("target").toLowerCase() === "_new"
+          || $link.attr("target").toLowerCase() === "new"
+        ))
     ) {
       return true;
     }
@@ -282,14 +291,14 @@ VuFind.register('lightbox', function Lightbox() {
     // Gather data
     var form = event.target;
 
-    // ORIGINAL: var data = $(form).serializeArray();
     // AK: Use FormData to be able to upload files via ajax. The jQuery function serializeArray()
-    //     does NOT serialize content of file input fields of forms.
+    // does NOT serialize content of file input fields of forms.
+    // ORIGINAL: var data = $(form).serializeArray();
     var data = new FormData(form);
 
     // Force layout
-    // ORIGINAL: data.push({ name: 'layout', value: 'lightbox' }); // Return in lightbox, please
     // AK: Use FormData object
+    // ORIGINAL: data.push({ name: 'layout', value: 'lightbox' }); // Return in lightbox, please
     data.append('layout', 'lightbox');
 
     // Add submit button information
@@ -307,8 +316,8 @@ VuFind.register('lightbox', function Lightbox() {
       buttonData.name = submit.attr('name') || 'submit';
       buttonData.value = submit.attr('value') || 1;
     }
-    // ORIGINAL: data.push(buttonData);
     // AK: Use FormData object
+    // ORIGINAL: data.push(buttonData);
     data.append(buttonData.name, buttonData.value);
     
     // Special handlers
