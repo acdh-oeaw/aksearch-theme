@@ -1,3 +1,11 @@
+<?php
+    // Set up page title:
+    $this->headTitle($this->translate('privacy_statement'));
+
+    // Set up breadcrumbs:
+    $this->layout()->breadcrumbs = '<li class="active"><a href="' . $this->url('content-page', ['page' => 'privacy']) . '">' . $this->transEsc('privacy_statement') . '</a></li>';
+?>
+
 <h2>Datenschutzerklärung</h2>
 <div style="margin-left: 20px;">
     Der Schutz Ihrer personenbezogenen Daten ist der AK Bibliothek Wien für
