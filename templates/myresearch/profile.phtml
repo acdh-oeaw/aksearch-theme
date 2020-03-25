@@ -74,6 +74,7 @@
       <?=$this->renderArray(
         $arrTemplate, $this->profile,
         [
+          $this->transEsc('Username') => 'cat_username',
           $this->transEsc('First Name') => 'firstname',
           $this->transEsc('Last Name') => 'lastname',
           $this->transEsc('Address') . ' 1' => 'address1',
