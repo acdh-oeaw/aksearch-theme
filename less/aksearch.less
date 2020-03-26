@@ -73,7 +73,6 @@ header .search.container.navbar {
 
 // General button style
 .btn {
-	display: inline-block;
 	margin-bottom: 0;
 	font-weight: normal;
 	text-align: center;
@@ -92,6 +91,42 @@ header .search.container.navbar {
 	line-height: 25px;
 	margin: 1px 0 0;
 	padding: 0px 6px 6px 6px;
+}
+
+// Base layout for gray/red buttons
+.btn:not(.btn-link) {
+	font-weight: bold;
+	color: #fff;
+	background-color: #333;
+	border-color: #e0e0e0;
+}
+
+// Hover, focus and active layout for gray/red buttons
+.btn:not(.btn-link):hover, .btn:not(.btn-link):focus, .btn:not(.btn-link):active {
+	background-color: #be0021;
+	border-color: #333;
+	color: #fff;
+	outline: none;
+}
+
+// Add "!important" to this class because otherwise a "display" declaration of another
+// rule could overwrite it which would have the effect that things would be displayed
+// even if they are not in a lightbox.
+/*
+.lightbox-only {
+    display: none !important;
+}
+*/
+
+// A copy of the .alert-success rules. This is because the lightbox code of VuFind
+// stops displaying any text except the text in a box with the class .alert-success.
+// If we want to display other text additionaly to a .alert-success box, we need to
+// create our own .alert-success class (we just copy it). See also this page:
+// https://vufind.org/wiki/development:architecture:lightbox#a_success_message_is_reached
+.alert-success-copy {
+    color: #2d4821;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
 }
 
 // Makes table content in record detail view align left. This gives us more
@@ -140,21 +175,6 @@ header .search.container.navbar {
 // Padding for item notes in the tables of the "holdings ILS" tab
 .item-notes ul {
 	padding-left: 1rem;
-}
-
-// Layout for "login", "place a hold" and "recall this" buttons in the tables of the
-// "holdings ILS" tab .
-.holIlsBtn {
-	font-weight: bold;
-	color: #fff;
-	background-color: #333;
-	border-color: #e0e0e0;
-}
-.holIlsBtn:hover, .holIlsBtn:focus, .holIlsBtn:active {
-	background-color: #be0021;
-	border-color: #333;
-	color: #fff;
-	outline: none;
 }
 
 // Styling search button
