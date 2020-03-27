@@ -23,3 +23,9 @@
     <?php // AK: Link to "Account" page. Float it right (pull-right) ?>
     <a class="btn pull-right" href="<?=$this->url('myresearch-home')?>" data-lightbox-ignore title="<?=$this->transEsc('toAccount')?>"><?=$this->transEsc('toAccount')?></a>
 </div>
+
+<?php
+// AK: Refresh page on closing the welcome page in the lightbox
+$script = 'VuFind.lightbox.refreshOnClose = true;';
+echo $this->inlineScript(\Zend\View\Helper\HeadScript::SCRIPT, $script, 'SET');
+?>
