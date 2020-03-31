@@ -72,7 +72,7 @@ header .search.container.navbar {
 }
 
 // General button style
-.btn {
+.btn, .reset-filters-btn {
 	margin-bottom: 0;
 	font-weight: normal;
 	text-align: center;
@@ -94,7 +94,7 @@ header .search.container.navbar {
 }
 
 // Base layout for gray/red buttons
-.btn:not(.btn-link) {
+.btn:not(.btn-link), .reset-filters-btn {
 	font-weight: bold;
 	color: #fff;
 	background-color: #333;
@@ -107,6 +107,64 @@ header .search.container.navbar {
 	border-color: #333;
 	color: #fff;
 	outline: none;
+}
+
+// "Reset filter" button in the search bar. The dark-gray background color
+// of our buttons is used (see general .btn style above). This is the hover,
+// focuse and acitve style. No visible changes will be seen on this actions.
+.reset-filters-btn:hover, .reset-filters-btn:active, .reset-filters-btn:focus {
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    outline: none;
+}
+
+// "Active filter" indicators in search bar. We use the dark-gray background color
+// of our buttons for them.
+.active-filters .filters .filter-value {
+	background: #333;
+}
+
+// Style for the "remove" X for "active filter" indicators in the search bar
+// This has the effect that there is no visible change on hover, focus and active.
+.active-filters .search-filter-remove:hover,
+.active-filters .search-filter-remove:focus,
+.active-filters .search-filter-remove:active {
+    color: #fff;
+    text-decoration: none;
+    outline: none;
+}
+
+// White texts in search bar
+.searchForm .btn-link,
+.active-filters .filters .filters-term,
+.active-filters .filters .filters-title,
+.adv_search_links, .adv_search_links a {
+    color: #fff;
+    font-weight: 600;
+}
+.adv_search_terms {
+    color: #fff;
+}
+
+// X button on advanced search form that displays after having added a new search
+// field.
+.adv-search .adv-term-remove:hover {
+    text-decoration: none;
+    color: #333;
+    opacity: .8;
+}
+
+// Style for handlers in slider for publication year filter
+.slider-container .slider-handle {
+	background: #333;
+	border: 1px solid #333;
+}
+.slider-container .slider-handle:hover,
+.slider-container .slider-handle:active,
+.slider-container .slider-handle:focus {
+	background: #be0021;
+	border-color: #333;
 }
 
 // Add "!important" to this class because otherwise a "display" declaration of another
