@@ -32,6 +32,12 @@
         $offlineMode = 'ils-offline';
     }
 
+    // AK: Check for account blocks
+    $blocks = false;
+    if (!empty($holdings['blocks'])) {
+      $blocks = true;
+    }
+
     // AK: Get (and in consequence show) summarized holdings only if we are on first page
     if (!isset($holdings['page']) || $holdings['page'] <= 1) {
       $holdings['summarizedHoldings'] = $this->tab->getSummarizedHoldings();
@@ -43,7 +49,7 @@
 
 <?=$this->context($this)->renderInContext('librarycards/selectcard.phtml', ['user' => $this->auth()->isLoggedIn()]); ?>
 
-<?php if (!empty($holdings['blocks'])):?>
+<?php if ($blocks):?>
   <div id="account-block-msg" class="alert alert-danger">
     <?=$this->transEsc('account_block_options_missing', ['%%details%%' => implode('; ', $holdings['blocks'])]) ?>
   </div>
@@ -51,21 +57,6 @@
 
 <?php // Show info text if ILS is offline ?>
 <?=($offlineMode == "ils-offline") ? $this->render('Helpers/ils-offline.phtml', ['offlineModeMsg' => 'ils_offline_holdings_message']) : ''?>
-
-<!--
-  TODO: AK: This renders the link with the text "Eine Anfrage zu einem allgemeinen Titel aufgeben" on top of the
-holdings ils tab which is confusing to our users. We render a button for each item that just does the same as this link.
-PROBLEM: Rendering the button for each item calls the API too often. We would just need one API call.
-SOLUTION: Render the button here, copy it and add it to every line further down.
-EXAMPLE RECORD ID: 990004579100203343
--->
-<?php
-/*
-<?php $holdingTitleHold = $this->driver->tryMethod('getRealTimeTitleHold'); if (!empty($holdingTitleHold)): ?>
-  <a class="placehold" data-lightbox title="<?=$this->transEsc('request_place_text')?>" href="<?=$this->recordLink()->getRequestUrl($holdingTitleHold)?>"><i class="fa fa-flag" aria-hidden="true"></i>&nbsp;<?=$this->transEsc('title_hold_place')?></a>
-<?php endif; ?>
-*/
-?>
 
 <?php // Show URLs ?>
 <?php if (!empty($urls) || $openUrlActive || $doiActive): ?>
@@ -319,11 +310,14 @@ EXAMPLE RECORD ID: 990004579100203343
                 </td>
               <?php endif; ?>
               <td>
-              <?php // Show location text instead of anything else ?>
-              <?php if ($item['locationtext']): ?>
+              <?php // Show account block message ?>
+              <?php if ($blocks): ?>
+                <?=$this->transEsc('account_block_no_holds')?>
+              <?php // Show location text ?>
+              <?php elseif ($item['locationtext']): ?>
                 <?=$this->transEsc($item['locationtext'])?>
               <?php else: ?>
-              <?php // Show login button or warning about missing ILS account ?>
+                <?php // Show login button or warning about missing ILS account ?>
                 <?php if ($this->ils()->getHoldsMode() == 'driver' || $this->ils()->getTitleHoldsMode() == 'driver'): ?>
                   <?php if ($account->loginEnabled() && $offlineMode != 'ils-offline'): ?>
                     <?php if (!$user): ?>
