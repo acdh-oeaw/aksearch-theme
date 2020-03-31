@@ -20,7 +20,11 @@
     <?php // AK: Main welcome text ?>
     <?=$this->translate('welcome_text')?>
 
-    <?php // AK: Link to "Account" page. Float it right (pull-right) ?>
+    <?php
+    // AK: Link to "Account" page. Float it right (pull-right).
+    // "data-lightbox-ignore" makes the link close the lightbox and open the target
+    // on the main page.
+    ?>
     <a class="btn pull-right" href="<?=$this->url('myresearch-home')?>" data-lightbox-ignore title="<?=$this->transEsc('toAccount')?>"><?=$this->transEsc('toAccount')?></a>
 </div>
 
