@@ -1,8 +1,13 @@
 // Include less base from bootstrap theme (= parent theme)
 @import "bootstrap";
 
-// Global textual link color variable
-@link-color: #1079a5;
+// Global variables (see theme "bootstrap3", file "less/vendor/bootstrap/variables.less")
+@link-color:             #1079a5;
+@font-family-sans-serif: "Open Sans", sans-serif;
+@font-size-base:          13px;
+
+// Custom variables
+@font-size-larger:        ceil((@font-size-base * 1.2));
 
 .navbar-brand {
     height: auto; // Making space for AKsearch Logo
@@ -166,6 +171,61 @@ header .search.container.navbar {
 	background: #be0021;
 	border-color: #333;
 }
+
+// A spacer between the title (including parent title) and the rest of the data in the results list
+.spacer {
+    margin-bottom: 8px;
+}
+
+// Bigger title in results list
+.result-body .title {
+    font-weight: normal;
+    font-size: @font-size-larger;
+}
+
+// Set color for star at "Add favourite" to gray
+.result-links .fa-star::before {
+	color: #333;
+}
+
+// TODO: Here are some tests concerning shortening long lines in the results list with ellipsis. See file "result-list.phtml".
+// The problem is that the parent div has "display: table-cell". Long lines within that parent keep it growing so that the
+// ellipsis is not shown. Maybe we could use flexbox, but we have to test it in IE11.
+/*
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+.media-left, .media-right, .media-body {
+	display: block;
+}
+.record .media-left, .result .media-left, .record .media-right, .result .media-right {
+	max-width: 10%;
+	float: left;
+}
+.record .media-left, .result .media-left {
+	margin-right: 1%;
+}
+.media-left, .media > .pull-left {
+	padding-right: 1%;
+}
+.media-body {
+    width: 88%;
+	max-width: 88% !important;
+}
+.result-body {
+	float: left;
+	width: 80%;
+}
+.result-links {
+	float: left;
+	width: 20%;
+	padding: 0;
+	text-align: right;
+}
+*/
 
 // Add "!important" to this class because otherwise a "display" declaration of another
 // rule could overwrite it which would have the effect that things would be displayed
