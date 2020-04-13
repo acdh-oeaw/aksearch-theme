@@ -26,8 +26,6 @@
         </a>
       </div>
 
-
-
       <?php
       // TODO: AK: Shorten long lines with ellipsis (see "ellipsis" class in aksearch.less - commented out at the moment).
       // The problem is that the parent div has "display: table-cell". Long lines within that parent keep it growing so that
@@ -191,7 +189,7 @@
           <?=$doi->renderTemplate()?>
         <?php endif; ?>
 
-        <?php //$urlCount = count($urls); foreach ($urls as $i => $current): ?>
+        <?php // AK: Custom URL display ?>
         <?php if (!is_array($urls)) $urls = []; if(!$this->driver->isCollection()): ?>
         <b><?=$this->transEsc('links')?>:</b>
         <?php $urlCount = count($urls); foreach ($urls as $i => $current): ?>
