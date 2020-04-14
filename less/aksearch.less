@@ -362,6 +362,19 @@ header .search.container.navbar {
     margin-left: 0px !important;
 }
 
+// Set color for the password hint in the "create new user" form, but not the
+// color of the error-texts.
+#almaUserRegistration .help-block:not(.with-errors) {
+    color: #333;
+}
+
+// Remove margin of the password hint in the "create new user" form.
+#almaUserRegistration .help-block.with-errors {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    padding-top: 0;
+}
+
 // Styling of file info text for sending the residential registration card
 // on the "create new user" form
 .fileInfoText {
