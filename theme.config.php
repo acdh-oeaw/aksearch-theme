@@ -26,6 +26,7 @@ return [
     'less' => [
         'active' => true,
         'compiled.less'
-    ]
+    ],
+    'favicon' => 'aksearch-favicon.ico'
 
 ];
