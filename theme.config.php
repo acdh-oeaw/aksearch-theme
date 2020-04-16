@@ -21,7 +21,9 @@ return [
       ]
     ],
     'js' => [
-        'lightbox.js'
+        'lightbox.js',
+        'vendor/klaro/klaro-config.js',
+        'vendor/klaro/klaro.js'
     ],
     'less' => [
         'active' => true,
