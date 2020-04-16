@@ -27,7 +27,7 @@ var klaroConfig = {
     //cookieDomain: '.github.com',
 
     // Put a link to your privacy policy here (relative or absolute).
-    privacyPolicy: '/Content/privacy',
+    privacyPolicy: '/Content/privacy#cookies',
 
     // Defines the default state for applications (true=enabled by default).
     default: false,
@@ -65,6 +65,10 @@ var klaroConfig = {
             consentModal: {
                 description:
                     'Hier können Sie einsehen und anpassen, welche Cookies von dieser Webseite gespeichert werden.',
+                privacyPolicy: {
+                    name: 'Datenschutzerklärung',
+                    text: 'Weitere Details finden Sie in unserer {privacyPolicy}. Dort können Sie die bereits getroffenen Einstellungen auch wieder ändern.'
+                }
             },
             matomo: {
                 description: 'Sammeln von Besucherstatistiken (DSGVO konform)',
@@ -85,6 +89,10 @@ var klaroConfig = {
             consentModal: {
                 description:
                     'Here you can see and customize the cookies that are saved by this website.',
+                privacyPolicy: {
+                    name: 'Privacy Statement',
+                    text: 'Please find more information in our {privacyPolicy}. There you can change the settings you have already made.'
+                }
             },
             matomo: {
                 description: 'Collecting of visitor statistics (GDPR compliant)',
