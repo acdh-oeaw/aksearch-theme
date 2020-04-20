@@ -381,7 +381,9 @@
 
     <?php endforeach; ?>
     <?php if (!empty($holdings['total']) && $paginator = $this->tab->getPaginator($holdings['total'], $holdings['page'], $holdings['itemLimit'])): ?>
-      <?=$this->paginationControl($paginator, 'Sliding', 'Helpers/pagination.phtml', ['page' => $holdings['page']])?>
+      <?php // AK: Fix pagination when the default tab is not set to Holdings by passing 'recordtab' and 'driver' to '[theme]\templates\Helpers\pagination.html'
+            //     TODO: Add to VuFind master code. ?>
+      <?=$this->paginationControl($paginator, 'Sliding', 'Helpers/pagination.phtml', ['page' => $holdings['page'], 'recordtab' => 'holdings', 'driver' => $this->driver])?>
     <?php endif; ?>
     <?php $history = $this->driver->getRealTimeHistory(); ?>
     <?php if (is_array($history) && !empty($history)): ?>
