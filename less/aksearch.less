@@ -394,6 +394,13 @@ header .search.container.navbar {
     margin-bottom: 18px;
 }
 
+// Less padding for unordered lists (ul) in the details view core table
+// and the description tab of the details view.
+.core-details ul, .description-tab ul {
+    margin: 0;
+    padding-left: (@table-cell-padding+6px);
+}
+
 // Adding "open" and "close" arrows to the collapsible panels in the
 // "child records" tab of the record detail view. They change their direction
 // if the panel is closed or opened.
