@@ -414,11 +414,50 @@ header .search.container.navbar {
     content: "\f078";
 }
 
-// Some padding for the tables in the "child records" tab of the record
-// detail view
-.child-records-table {
-    padding-right: 8px;
-    padding-left: 8px;
+// Reset padding for some collapsible panels
+.panel-body {
+    padding: 0;
+}
+
+// Fix borders in collapsible child panels
+.yearVolPanel {
+    border: none;
+    border-bottom: #ddd 1px solid;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+// Padding for table with child data in panels
+.partsPanelGroup th {
+    padding-left: 10px !important;
+}
+
+// White background for year/volume and issue panel heading
+.yearVolPanelHeading, .issuePanelHeading {
+    background-color: #fff !important;
+}
+
+// Margin for year/volume panel without a nested issue panel
+:not(.yearVolPanelBody:has(div.issuePanel)) {
+    margin-left: 18px;
+}
+
+// No borders and some margins for issue panels
+.issuePanel {
+    border: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+// No border for last issue panel
+.issuePanel:not(:last-child) {
+    border-bottom: #ddd 1px solid;
+}
+
+// Some margins on panels
+.issuePanelBody, .yearVolSpacer {
+    margin-left: 18px;
 }
 
 
