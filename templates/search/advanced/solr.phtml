@@ -27,7 +27,7 @@
               }
               // AK: Use sorting based on locale instead of natcasesort. This sorts
               // Umlauts correctly (ä, ö, ü) and ignores the case of the words.
-              sort($sorted, SORT_LOCALE_STRING);
+              asort($sorted, SORT_LOCALE_STRING);
               ?>
               <?php foreach ($sorted as $i => $display): ?>
                 <?php $value = $list['list'][$i]; ?>
