@@ -194,7 +194,8 @@
         <b><?=$this->transEsc('links')?>:</b>
         <?php $urlCount = count($urls); foreach ($urls as $i => $current): ?>
           <?php // TODO: AK: These are not only fulltext URLs! ?>
-          <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($current['url']))?>" class="fulltext" target="new"><i class="fa fa-external-link" aria-hidden="true"></i> <?=($current['url'] == $current['desc']) ? $this->transEsc('Get full text') : $this->escapeHtml($current['desc'])?></a><?=$i + 1 < $urlCount ? ';' : ''?>
+          <?php // AK: Translated link texts! ?>
+          <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($current['url']))?>" class="fulltext" target="new"><i class="fa fa-external-link" aria-hidden="true"></i> <?=($current['url'] == $current['desc']) ? $this->transEsc('Get full text') : $this->transEsc($current['desc'])?></a><?=$i + 1 < $urlCount ? ';' : ''?>
           <?php endforeach; ?>
         <?php endif; ?>
       <?php endif; ?>
