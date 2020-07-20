@@ -338,7 +338,8 @@ VuFind.register('lightbox', function Lightbox() {
       }, false);
     }
     // Loading
-    _modalBody.prepend('<i class="modal-loading fa fa-spinner fa-spin" title="' + VuFind.translate('loading') + '"></i>');
+    // AK: Bigger size of spinner ("fa-2x") in modal dialog for better visibility 
+    _modalBody.prepend('<i class="modal-loading fa fa-spinner fa-spin fa-2x" title="' + VuFind.translate('loading') + '"></i>');
     // Prevent multiple submission of submit button in lightbox
     if (submit.closest(_modal).length > 0) {
       submit.attr('disabled', 'disabled');
