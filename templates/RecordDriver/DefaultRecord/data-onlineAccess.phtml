@@ -8,7 +8,7 @@
 ?>
 <?php foreach ($urls as $current): ?>
   <?php // AK: Translate the description ?>
-  <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($current['url']))?>"><?=$this->transEsc($current['desc'])?></a><br/>
+  <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($current['url']))?>" target="_blank"><?=$this->transEsc($current['desc'])?></a><br/>
 <?php endforeach; ?>
 <?php if ($openUrlActive): ?>
   <?=$openUrl->renderTemplate()?><br/>
