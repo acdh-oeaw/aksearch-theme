@@ -1,7 +1,14 @@
 <?php if (!empty($data)): ?>
     <?php foreach ($data as $key => $value): ?>
         <?php if ($value['prefix'] && $relInfo = $value['relInfo']) : ?>
-            <?=rtrim($this->escapeHtml($relInfo), ':').': '?>
+            <?php $pattern = $value['prefixExclude']; ?>
+            <?php if ($pattern !== null) : ?>
+                <?php if (!preg_match($pattern, $relInfo)) : ?>
+                    <?=rtrim($this->escapeHtml($relInfo), ':').': '?>
+                <?php endif;?>
+            <?php else: ?>
+                <?=rtrim($this->escapeHtml($relInfo), ':').': '?>
+            <?php endif;?>
         <?php endif; ?>
         <?php if ($id = $value['id']) : ?>
             <a href="<?=$this->recordLink()->getUrl($value['id'])?>"><?=$this->escapeHtml($value['title'])?></a>
