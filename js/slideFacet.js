@@ -71,7 +71,7 @@ function initSlideFacet(baseData) {
  * Get the facet HTML and process it. That means:
  * - Set the initial facets to the facet wrapper without slide effect.
  * - If an arrow button was clicked, slide-in the newly loaded facets from the left
- * - If the back button was clicked, slide-in the previous facet level from the rigth
+ * - If the back button was clicked, slide-in the previous facet level from the right
  * @param {object} params 
  */
 function getAndProcessFacetsHtml(params) {
