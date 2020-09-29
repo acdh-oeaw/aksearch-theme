@@ -31,6 +31,14 @@ function initSlideFacet(baseData) {
     // Get current query for appending it to the ajax call
     var query = window.location.href.split('?')[1];
 
+    // Get the route parameters. This tells us from where the init call comes. This is especially
+    // useful if certain actions should only be taken if the facets are displayed on certain pages,
+    // e. g. on the NewItems page. See AkSearch\AjaxHandler\GetFacetData->getFacetData() for an
+    // example.
+    var route = window.location.pathname.split('/');
+    // Remove the first element as this is always empty
+    route.shift()
+
     // Some initial parameters
     var params = {
         baseData: baseData,
@@ -48,6 +56,7 @@ function initSlideFacet(baseData) {
         // GET parameter for ajax call
         {
             method: 'getFacetData',
+            route: route,
             source: baseData.source,
             facetName: baseData.facetName,
             facetSort: baseData.facetSort,
