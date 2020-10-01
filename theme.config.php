@@ -3,6 +3,7 @@ return [
     'extends' => 'bootstrap3',
     'helpers' => [
       'factories' => [
+        'AkSearch\View\Helper\Root\AccountMenu' => 'AkSearch\View\Helper\Root\AccountMenuFactory',
         'AkSearch\View\Helper\AkSearch\Datepicker' => 'AkSearch\View\Helper\AkSearch\DatepickerFactory',
         'AkSearch\View\Helper\Root\Auth' => 'VuFind\View\Helper\Root\AuthFactory',
         'AkSearch\View\Helper\Root\Citation' => 'VuFind\View\Helper\Root\CitationFactory',
@@ -11,6 +12,7 @@ return [
         'VuFind\View\Helper\Root\RecordDataFormatter' => 'AkSearch\View\Helper\Root\RecordDataFormatterFactory'
       ],
       'aliases' => [
+        'accountMenu' => 'AkSearch\View\Helper\Root\AccountMenu',
         'auth' => 'AkSearch\View\Helper\Root\Auth',
         'datepicker' => 'AkSearch\View\Helper\AkSearch\Datepicker',
         'searchbox' => 'AkSearch\View\Helper\Root\SearchBox',
