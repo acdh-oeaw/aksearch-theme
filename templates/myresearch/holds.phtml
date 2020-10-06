@@ -96,7 +96,7 @@
             <?php // AK: Space between title (and parent data if applicable) and the rest of the data ?>
             <div class="spacer">
               <?php // AK: Show parent data. Replaces "Published in" from original VuFind code. ?>
-              <?php foreach ($data = ($resource->getConsolidatedParents() ?? []) as $key => $value): ?>
+              <?php foreach ($data = ($resource->tryMethod('getConsolidatedParents') ?? []) as $key => $value): ?>
                 <?php // AK: Get some values about the parent if there is one
                   $pntVolNo = $value['volNo'] ?? null;
                   $pntTitle = $value['title'] ?? null;
@@ -114,7 +114,7 @@
             </div>
 
             <?php // AK: Get all contributors ?>
-            <?php $summAuthors = $resource->getContributors(); if (!empty($summAuthors)): ?>
+            <?php $summAuthors = $resource->tryMethod('getContributors') ?? []; if (!empty($summAuthors)): ?>
               <span title="<?=implode('; ', $summAuthors)?>">
                 <b><?=$this->transEsc('participants')?>:</b>
                 <?php $authorCount = count($summAuthors); ?>
@@ -126,13 +126,13 @@
             <?php endif; ?>
 
             <?php // AK: Get publication dates ?>
-            <?php if (!empty($pubYear = $resource->getPublicationDates())): ?>
+            <?php if (!empty($pubYear = ($resource->tryMethod('getPublicationDates') ?? []))): ?>
               <strong><?=$this->transEsc('Published')?>:</strong> <?=$this->escapeHtml(implode('; ', $pubYear))?>
               <br />
             <?php endif; ?>
 
             <?php // AK: Get publishers ?>
-            <?php if (!empty($publishers = $resource->getPublishers())): ?>
+            <?php if (!empty($publishers = ($resource->tryMethod('getPublishers') ?? []))): ?>
               <b><?=$this->transEsc('Publisher')?>:</b> <?=join('; ', $publishers)?>
               <br />
             <?php endif; ?>
@@ -169,7 +169,7 @@
 
             <?php // AK: Added spacer ?>
             <div class="spacer">
-              <?php if (count($resource->getFormats()) > 0): ?>
+              <?php if (count(($resource->tryMethod('getFormats') ?? [])) > 0): ?>
                 <?=$this->record($resource)->getFormatList() ?>
                 <br/>
               <?php endif; ?>
