@@ -1,6 +1,7 @@
 <?php
 return [
     'extends' => 'bootstrap3',
+    'favicon' => 'aksearch-favicon.ico',
     'helpers' => [
       'factories' => [
         'AkSearch\View\Helper\Root\AccountMenu' => 'AkSearch\View\Helper\Root\AccountMenuFactory',
@@ -30,7 +31,5 @@ return [
     'less' => [
         'active' => true,
         'compiled.less'
-    ],
-    'favicon' => 'aksearch-favicon.ico'
-
+    ]
 ];
