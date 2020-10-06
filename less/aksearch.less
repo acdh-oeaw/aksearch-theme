@@ -2,7 +2,8 @@
 @import "bootstrap";
 
 // Global variables (see theme "bootstrap3", file "less/vendor/bootstrap/variables.less")
-@link-color:             #1079a5;
+//@link-color:             #1079a5;
+@link-color:             #0f78a4;
 @font-family-sans-serif: "Open Sans", sans-serif;
 @font-size-base:          13px;
 
@@ -489,6 +490,17 @@ header .search.container.navbar {
     float: right;
 }
 
+// Change colors in cookie consent dialog for better contrast (WAI-WCAG)
+.klaro .cookie-modal a, .klaro .cookie-notice a {
+    color: #15A8E6 !important;
+}
+.klaro .cookie-modal .cm-modal .cm-body ul.cm-apps li.cm-app p.purposes {
+    color: #eee !important;
+}
+.klaro .cookie-modal .cm-btn.cm-btn-info, .klaro .cookie-notice .cm-btn.cm-btn-info {
+    background-color: #0f78a4 !important;
+    color: #fff !important;
+}
 
 
 // Style for other screen sizes
