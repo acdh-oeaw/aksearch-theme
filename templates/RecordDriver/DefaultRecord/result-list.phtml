@@ -90,7 +90,7 @@
 
           <?php $summDate = $this->driver->getPublicationDates(); ?>
           <?php if (!empty($summDate)): ?>
-            <b><?=$this->transEsc('Published')?>:</b> <?=$this->escapeHtml($summDate[0])?>
+            <b><?=$this->transEsc('Published')?>:</b> <?=$this->escapeHtml(implode('; ', $summDate))?>
             <br />
           <?php endif; ?>
 
@@ -207,7 +207,7 @@
         <?php if (!empty($accessNotes = $this->driver->getAccessNotes())): ?>
           <br/>
           <b><?=$this->transEsc('access_note')?>:</b>
-          <?=implode('; ', $accessNotes)?>
+          <?=$this->escapeHtml(implode('; ', $accessNotes))?>
         <?php endif; ?>
 
       <?php endif; ?>

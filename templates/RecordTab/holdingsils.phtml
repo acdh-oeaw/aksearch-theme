@@ -67,7 +67,7 @@
       <?php // AK: Display access note ?>
       <?php if (!empty($accessNotes = $this->driver->getAccessNotes())): ?>
         <?=$this->transEsc('access_note')?>:
-        <?=implode('; ', $accessNotes)?>
+        <?=$this->escapeHtml(implode('; ', $accessNotes))?>
         <br /><br />
       <?php endif; ?>
 
