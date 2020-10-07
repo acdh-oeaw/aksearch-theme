@@ -1,4 +1,8 @@
 <?php
+  /*
+  AK: INFO - This is the template for the single entries in a "favourite list"
+  */
+  
   // Set up some convenience variables:
   $id = $this->driver->getUniqueId();
   $source = $this->driver->getSourceIdentifier();
@@ -171,6 +175,13 @@
                 <?php // TODO: AK: These are not only fulltext URLs! ?>
                 <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($current['url']))?>" class="fulltext" target="new"><i class="fa fa-external-link" aria-hidden="true"></i> <?=($current['url'] == $current['desc']) ? $this->transEsc('Get full text') : $this->escapeHtml($current['desc'])?></a><?=$i + 1 < $urlCount ? ';' : ''?>
                 <?php endforeach; ?>
+              <?php endif; ?>
+
+              <?php // AK: Display access note ?>
+              <?php if (!empty($accessNotes = $this->driver->getAccessNotes())): ?>
+                <br/>
+                <b><?=$this->transEsc('access_note')?>:</b>
+                <?=implode('; ', $accessNotes)?>
               <?php endif; ?>
 
             <?php endif; ?>

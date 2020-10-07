@@ -62,13 +62,23 @@
 <?php if (!empty($urls) || $openUrlActive || $doiActive): ?>
   <div class='holdings urls'>
     <h3><?=$this->transEsc("Internet")?></h3>
-    <?php if (!empty($urls)): ?>
-      <?php foreach ($urls as $current): ?>
-        <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($current['url']))?>"><?=$this->escapeHtml($current['desc'])?></a><br/>
-      <?php endforeach; ?>
-    <?php endif; ?>
-    <?php if ($openUrlActive): ?><?=$openUrl->renderTemplate()?><?php endif; ?>
-    <?php if ($doiActive): ?><?=$doi->renderTemplate()?><?php endif; ?>
+
+    <div class="padding-online-content">
+      <?php // AK: Display access note ?>
+      <?php if (!empty($accessNotes = $this->driver->getAccessNotes())): ?>
+        <?=$this->transEsc('access_note')?>:
+        <?=implode('; ', $accessNotes)?>
+        <br /><br />
+      <?php endif; ?>
+
+      <?php if (!empty($urls)): ?>
+        <?php foreach ($urls as $current): ?>
+          <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($current['url']))?>"><?=$this->escapeHtml($current['desc'])?></a><br/>
+        <?php endforeach; ?>
+      <?php endif; ?>
+      <?php if ($openUrlActive): ?><?=$openUrl->renderTemplate()?><?php endif; ?>
+      <?php if ($doiActive): ?><?=$doi->renderTemplate()?><?php endif; ?>
+    </div>
   </div>
 <?php endif; ?>
 
