@@ -1,6 +1,6 @@
 <?php
 // Set up page title:
-$this->headTitle($this->translate('scheduledsearch'));
+$this->headTitle($this->transEsc('scheduledsearch'));
 
 // Set up breadcrumbs:
 $this->layout()->breadcrumbs = '<li><a href="' . $this->url('myresearch-home') . '">' . $this->transEsc('Your Account') . '</a></li>'
@@ -11,7 +11,7 @@ $this->layout()->breadcrumbs = '<li><a href="' . $this->url('myresearch-home') .
 	<div class="<?=$this->layoutClass('mainbody')?>">
 <?php endif; ?>
 
-	<h2><?=$this->translate('scheduledsearch')?></h2>
+	<h2><?=$this->transEsc('scheduledsearch')?></h2>
 	<p>
 		Für neu erworbene bzw. der Suchmaschine "AKsearch" neu hinzugefügte Medien
 		kann ein E-Mail-Alert eingerichtet werden.
