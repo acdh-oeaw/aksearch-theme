@@ -217,8 +217,8 @@ $this->layout()->breadcrumbs = '<li class="active"><a href="' . $this->url('cont
 		Sitzungssteuerung, Sprache und zum Seiten-Layout speichern. Diese Cookies
 		werden gelöscht, sobald Sie Ihren Browser schließen. Sie können jedoch nicht
 		in den Cookie-Einstellungen deaktivert werden.
-		Weiters gibt es funktionale Cookies. Diesesind nötig, um einige der
-		Funktionakitäten, die AKsearch anbietet, überhaupt korrekt ausführen zu
+		Weiters gibt es funktionale Cookies. Diese sind nötig, um einige der
+		Funktionalitäten, die AKsearch anbietet, überhaupt korrekt ausführen zu
 		können. Da diese Funktionalitäten nicht zwingend für das generelle
 		Funktionieren von AKsearch nötig (jedoch empfohlen) sind, können sie in den
 		Cookie-Einstellungen deaktiviert werden.
@@ -488,7 +488,7 @@ $this->layout()->breadcrumbs = '<li class="active"><a href="' . $this->url('cont
 	</p>
 	<p>
 		<div style="text-indent: 20px">
-			<a href="mailto:NOTHING">NOTHING</a>
+			<a href="mailto:<?=$this->escapeHtmlAttr($this->library_email)?>"><?=$this->escapeHtml($this->library_email)?></a>
 		</div>
 	</p>
 	<p>oder postalisch an:</p>
@@ -504,7 +504,7 @@ $this->layout()->breadcrumbs = '<li class="active"><a href="' . $this->url('cont
 	</p>
 	<p>oder telefonisch an:</p>
 	<div style="text-indent: 20px">
-		<a href="tel:NOTHING">NOTHING</a>
+		<a href="tel:<?=$this->escapeHtmlAttr($this->library_phone_href)?>"><?=$this->escapeHtml($this->library_phone_display)?></a>
 	</div>
 	<br />
 </div>
