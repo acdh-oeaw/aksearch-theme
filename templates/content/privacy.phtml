@@ -528,6 +528,6 @@ $this->layout()->breadcrumbs = '<li class="active"><a href="' . $this->url('cont
 		eines Ad-Blockers verhindern.
 	</p>
 	<br />
-	<iframe id="matomoOptOut" src="NOTHING?module=CoreAdminHome&action=optOut&language=de&backgroundColor=ffffff&fontColor=333333&fontSize=14px&fontFamily=%22Helvetica%20Neue%22%2CHelvetica%2CArial%2Csans-serif"></iframe>
+	<iframe id="matomoOptOut" src="<?=$this->escapeHtmlAttr($this->matomo_url)?>?module=CoreAdminHome&action=optOut&language=de&backgroundColor=ffffff&fontColor=333333&fontSize=14px&fontFamily=%22Helvetica%20Neue%22%2CHelvetica%2CArial%2Csans-serif"></iframe>
 
 </div>
