@@ -1,6 +1,4 @@
 <?php
-// AK: Just a change to test git mirroring
-
 return [
     'extends' => 'bootstrap3',
     'favicon' => 'aksearch-favicon.ico',
