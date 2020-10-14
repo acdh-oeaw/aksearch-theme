@@ -409,34 +409,37 @@
 
 <?php // No holdings available?>
 <div class='holdings noHoldings'>
-<?php // AK: Check if there are no holdings or URLs ?>
-  <?php if (empty($holdings['holdings']) && empty($urls) && empty($holdings['summarizedHoldings'])): ?>
+<?php // AK: Check if there are no holdings (or URLs - uncomment below) ?>
+  <?php if (empty($holdings['holdings']) /*&& empty($urls)*/ && empty($holdings['summarizedHoldings'])): ?>
     <?php // AK: If we have parent records, show a note and a link to a parent (if possible) ?>
-    <?php if ($this->tab->hasParents() && $parents = $this->tab->getParents()): ?>
-      <h4><?=$this->transEsc('IntegratedInParentHolding')?></h4>
-      <?php foreach ($parents as $key => $value):
-        $containerSource = $this->driver->getSourceIdentifier();
-      ?>
-        <?php if ($id = $value['id']) : ?>
-          <a href="<?=$this->recordLink()->getUrl("$containerSource|$id")?>">
+    <h3><?=$this->transEsc("holdingNote")?></h3>
+    <div class="padding-online-content">
+      <?php if ($this->tab->hasParents() && $parents = $this->tab->getParents()): ?>
+        <?=$this->transEsc('IntegratedInParentHolding')?><br />
+        <?php foreach ($parents as $key => $value):
+          $containerSource = $this->driver->getSourceIdentifier();
+        ?>
+          <?php if ($id = $value['id']) : ?>
+            <a href="<?=$this->recordLink()->getUrl("$containerSource|$id")?>">
+              <?=$this->escapeHtml($value['title'])?>
+            </a>
+          <?php else: ?>
             <?=$this->escapeHtml($value['title'])?>
-          </a>
-        <?php else: ?>
-          <?=$this->escapeHtml($value['title'])?>
-        <?php endif; ?>
-        <?php if ($volNo = $value['volNo']): ?>
-          <?=' ('.$this->escapeHtml($value['volNo']).')'?> 
-        <?php endif; ?>
-        <br />
-      <?php endforeach; ?>
-    <?php elseif ($this->tab->hasChilds()): ?>
-      <h4><?=$this->transEsc('IntegratedInChildHolding')?></h4>
-      <a href="<?=$this->recordLink()->getTabUrl($this->driver, 'Parts')?>">
-        <?=$this->transEsc('child_records')?>
-      </a>
-    <?php else: ?>
-      <?php // AK: Show information that there are absolutely no holdings ?>
-      <h3><?=$this->transEsc('NoHoldingsExist')?></h3>
-    <?php endif; ?>
+          <?php endif; ?>
+          <?php if ($volNo = $value['volNo']): ?>
+            <?=' ('.$this->escapeHtml($value['volNo']).')'?> 
+          <?php endif; ?>
+          <br />
+        <?php endforeach; ?>
+      <?php elseif ($this->tab->hasChilds()): ?>
+        <h4><?=$this->transEsc('IntegratedInChildHolding')?></h4>
+        <a href="<?=$this->recordLink()->getTabUrl($this->driver, 'Parts')?>">
+          <?=$this->transEsc('child_records')?>
+        </a>
+      <?php else: ?>
+        <?php // AK: Show information that there are absolutely no holdings ?>
+        <h3><?=$this->transEsc('NoHoldingsExist')?></h3>
+      <?php endif; ?>
+    </div>
   <?php endif; ?>
 </div>
