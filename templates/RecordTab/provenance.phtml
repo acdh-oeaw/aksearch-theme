@@ -1,0 +1,47 @@
+<?php
+?>
+
+<h2>Feld 992</h2>
+<table class="table">
+    <tbody>
+        <tr>
+            <th>992f | Signaturvermerk:</th>
+            <td>A51136</td>
+        </tr>
+        <tr>
+            <th>992d | Einband:</th>
+            <td>Text</td>
+        </tr>
+        <tr>
+            <th>992m | Marginalien:</th>
+            <td>Text</td>
+        </tr>
+        <tr>
+            <th>992e | Exemplarhinweise:</th>
+            <td>
+                <ul style="padding-left: 12px;">
+                    <li>Handschriftliche Widmung: "Ein erster volkstühmlicher/[Versuch]!/D. Vf. [Der Verfasser]"</li>
+                    <li>Weitere Infos, wenn durch ". -" getrennt</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th>992p | Provenienz:</th>
+            <td>Etikett: Bibliotheksexemplar: "Ps" [Nachlass Pernerstorfer]</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Feld 695</h2>
+<table class="table">
+    <tbody>
+        <tr>
+            <th><?=ucfirst($this->transEsc('CreatorRoles::fmo'))?>:</th>
+            <td>
+                <a href="<?=$this->record($this->driver)->getLink('author', 'Pernerstorfer, Engelbert')?>">
+                    <?=$this->escapeHtml('Pernerstorfer, Engelbert')?>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
