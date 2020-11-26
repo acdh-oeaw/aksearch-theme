@@ -1,47 +1,171 @@
 <?php
+$prov = $this->tab->getItemProvenance();
+$xmps = $prov['xmps'] ?? null;
+$exls = $prov['exls'] ?? null; 
+$bezs = $prov['bezs'] ?? null;
 ?>
 
-<h2>Feld 992</h2>
-<table class="table">
-    <tbody>
-        <tr>
-            <th>992f | Signaturvermerk:</th>
-            <td>A51136</td>
-        </tr>
-        <tr>
-            <th>992d | Einband:</th>
-            <td>Text</td>
-        </tr>
-        <tr>
-            <th>992m | Marginalien:</th>
-            <td>Text</td>
-        </tr>
-        <tr>
-            <th>992e | Exemplarhinweise:</th>
-            <td>
-                <ul style="padding-left: 12px;">
-                    <li>Handschriftliche Widmung: "Ein erster volkstühmlicher/[Versuch]!/D. Vf. [Der Verfasser]"</li>
-                    <li>Weitere Infos, wenn durch ". -" getrennt</li>
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <th>992p | Provenienz:</th>
-            <td>Etikett: Bibliotheksexemplar: "Ps" [Nachlass Pernerstorfer]</td>
-        </tr>
-    </tbody>
-</table>
+<?php if($xmps) :?>
+    <h2>Exemplarbeschreibung</h2>
+    <?php foreach($xmps as $xmp): ?>
+        <table class="table">
+            <tbody>
+                <?php if (isset($xmp['callNo'])): ?>
+                    <tr>
+                        <th><?=$this->transEsc('Signatur')?>:</th>
+                        <td><?=$this->escapeHtml($xmp['callNo'])?></td>
+                    </tr>
+                <?php endif; ?>
+                <?php if (isset($xmp['cover'])): ?>
+                    <tr>
+                        <th><?=$this->transEsc('Einband')?>:</th>
+                        <td><?=$this->escapeHtml($xmp['cover'])?></td>
+                    </tr>
+                <?php endif; ?>
+                <?php if (isset($xmp['notes'])): ?>
+                    <tr>
+                        <th><?=$this->transEsc('Exemplarhinweise')?>:</th>
+                        <td>
+                            <?php if (count($xmp['notes'])>1): ?>
+                                <ul style="padding-left: 12px;">
+                                    <?php foreach($xmp['notes'] as $note): ?>
+                                        <li><?=$this->escapeHtml($note)?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            <?php else: ?>
+                                <?=$this->escapeHtml($xmp['notes'][0])?>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endif; ?>
+                <?php if (isset($xmp['marginalia'])): ?>
+                    <tr>
+                        <th><?=$this->transEsc('Marginalien')?>:</th>
+                        <td><?=$this->escapeHtml($xmp['marginalia'])?></td>
+                    </tr>
+                <?php endif; ?>
+                <?php if (isset($xmp['provenances'])): ?>
+                    <tr>
+                        <th><?=$this->transEsc('Provenienz')?>:</th>
+                        <td>
+                            <?php if (count($xmp['provenances'])>1): ?>
+                                <ul style="padding-left: 12px;">
+                                    <?php foreach($xmp['provenances'] as $provenance): ?>
+                                        <li><?=$this->escapeHtml($provenance)?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            <?php else: ?>
+                                <?=$this->escapeHtml($xmp['provenances'][0])?>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endif; ?>
+                <?php if (isset($xmp['lootNote'])): ?>
+                    <tr>
+                        <th><?=$this->transEsc('Raubgutkennung')?>:</th>
+                        <td><?=$this->escapeHtml($xmp['lootNote'])?></td>
+                    </tr>
+                <?php endif; ?>
+                <?php if (isset($xmp['restitutionState'])): ?>
+                    <tr>
+                        <th><?=$this->transEsc('Restitutionsstatus')?>:</th>
+                        <td><?=$this->escapeHtml($xmp['restitutionState'])?></td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    <?php endforeach; ?>
+<?php endif; ?>
 
-<h2>Feld 695</h2>
-<table class="table">
-    <tbody>
-        <tr>
-            <th><?=ucfirst($this->transEsc('CreatorRoles::fmo'))?>:</th>
-            <td>
-                <a href="<?=$this->record($this->driver)->getLink('author', 'Pernerstorfer, Engelbert')?>">
-                    <?=$this->escapeHtml('Pernerstorfer, Engelbert')?>
-                </a>
-            </td>
-        </tr>
-    </tbody>
-</table>
+
+<?php if($exls) :?>
+    <h2>Exlibrisangaben</h2>
+    <?php foreach($exls as $exl): ?>
+        <table class="table">
+            <tbody>
+                <?php if (isset($exl['dimension'])): ?>
+                    <tr>
+                        <th><?=$this->transEsc('Maße')?>:</th>
+                        <td><?=$this->escapeHtml($exl['dimension'])?></td>
+                    </tr>
+                <?php endif; ?>
+                <?php if (isset($exl['prevOwners'])): ?>
+                    <tr>
+                        <th><?=$this->transEsc('FrühereR EigentümerIn')?>:</th>
+                        <td>
+                            <?php if (count($exl['prevOwners'])>1): ?>
+                                <ul style="padding-left: 12px;">
+                                    <?php foreach($exl['prevOwners'] as $prevOwner): ?>
+                                        <li><?=$this->escapeHtml($prevOwner)?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            <?php else: ?>
+                                <?=$this->escapeHtml($exl['prevOwners'][0])?>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endif; ?>
+                <?php if (isset($exl['technology'])): ?>
+                    <tr>
+                        <th><?=$this->transEsc('Technik')?>:</th>
+                        <td><?=$this->escapeHtml($exl['technology'])?></td>
+                    </tr>
+                <?php endif; ?>
+                <?php if (isset($exl['motifs'])): ?>
+                    <tr>
+                        <th><?=$this->transEsc('Motiv')?>:</th>
+                        <td>
+                            <?php if (count($exl['motifs'])>1): ?>
+                                <ul style="padding-left: 12px;">
+                                    <?php foreach($exl['motifs'] as $motif): ?>
+                                        <li><?=$this->escapeHtml($motif)?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            <?php else: ?>
+                                <?=$this->escapeHtml($exl['motifs'][0])?>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endif; ?>
+                <?php if (isset($exl['text'])): ?>
+                    <tr>
+                        <th><?=$this->transEsc('Text')?>:</th>
+                        <td><?=$this->escapeHtml($exl['text'])?></td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    <?php endforeach; ?>
+<?php endif; ?>
+
+<?php if($exls) :?>
+    <h2>In Beziehung stehende Personen und Provenienzmerkmale</h2>
+    <?php foreach($bezs as $bez): ?>
+        <table class="table">
+            <tbody>
+                <?php if (isset($bez['name'])): ?>
+                    <tr>
+                        <th>
+                            <?php
+                                $rolesTransl = [];
+                                if (isset($bez['roles'])) {
+                                    foreach($bez['roles'] as $role) {
+                                        $rolesTransl[] = $this->transEsc('CreatorRoles::'.$role);
+                                    }
+                                } else {
+                                    $rolesTransl[] = $this->transEsc('CreatorRoles::aut');
+                                }
+                            ?>
+                            <?=implode(', ', $rolesTransl)?>
+                        </th>
+                        <td>
+                            <a href="<?=$this->record($this->driver)->getLink('author', $bez['name'])?>">
+                                <?=$this->escapeHtml($bez['name'])?>
+                            </a>
+                        </td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    <?php endforeach; ?>
+<?php endif; ?>

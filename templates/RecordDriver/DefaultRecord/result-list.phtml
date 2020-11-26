@@ -8,6 +8,10 @@
   $cover = $coverDetails['html'];
   $thumbnail = false;
   $thumbnailAlignment = $this->record($this->driver)->getThumbnailAlignment('result');
+  
+  // AK: Record banner config
+  $recordBannerConfig = $this->recordBannerConfig ?? null;
+  
   if ($cover):
     ob_start(); ?>
     <div class="media-<?=$thumbnailAlignment ?> <?=$this->escapeHtmlAttr($coverDetails['size'])?>">
@@ -288,8 +292,21 @@
     <?=$thumbnail ?>
   <?php endif ?>
 
-  <?php // MOCKUP: ULG PROJECT ?>
-  <?php if ($this->driver->getUniqueID() == '994823320303343' || $this->driver->getUniqueID() == '990002855970203343'): ?>
-    <img src="<?=$this->imageLink('ak100-logo.jpg')?>" alt="AKsearch Logo" width="200" style="float: right;"/>
+  <?php /* AK: Record banner. $recordBannerConfig comes from [theme]/templates/search/results.phtml */ ?>
+  <?php if (!empty($rbs = $this->driver->getRecordBanner($recordBannerConfig))): ?>
+    <?php foreach($rbs as $rb): ?>
+      <div class="well well-sm record-banner-container">
+        <?php if (isset($rb['image'])): ?>
+          <div class="record-banner-image">
+            <img src="<?=$this->imageLink($this->escapeHtmlAttr($rb['image']))?>" alt="<?=$this->escapeHtmlAttr(isset($rb['text']) ? $this->transEsc($rb['text']) : $this->transEsc('Record banner image'))?>" />
+          </div>
+        <?php endif ?>
+        <?php if (isset($rb['text'])): ?>
+          <div class="record-banner-text"><?=$this->transEsc($rb['text'])?></div>
+        <?php endif ?>
+        <br />
+      </div>
+    <?php endforeach; ?>
   <?php endif ?>
+
 </div>
