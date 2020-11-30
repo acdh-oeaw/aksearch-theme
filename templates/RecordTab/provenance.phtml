@@ -145,19 +145,7 @@ $bezs = $prov['bezs'] ?? null;
             <tbody>
                 <?php if (isset($bez['name'])): ?>
                     <tr>
-                        <th>
-                            <?php
-                                $rolesTransl = [];
-                                if (isset($bez['roles'])) {
-                                    foreach($bez['roles'] as $role) {
-                                        $rolesTransl[] = $this->transEsc('CreatorRoles::'.$role);
-                                    }
-                                } else {
-                                    $rolesTransl[] = $this->transEsc('CreatorRoles::aut');
-                                }
-                            ?>
-                            <?=implode(', ', $rolesTransl)?>
-                        </th>
+                        <th><?=$this->transEsc($bez['role'])?>:</th>
                         <td>
                             <a href="<?=$this->record($this->driver)->getLink('author', $bez['name'])?>">
                                 <?=$this->escapeHtml($bez['name'])?>
