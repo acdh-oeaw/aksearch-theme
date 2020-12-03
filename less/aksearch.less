@@ -432,6 +432,11 @@ header .search.container.navbar {
     content: "\f078";
 }
 
+// Same font size as h3 for panel title
+.panel-title {
+    font-size: 20px !important;
+}
+
 // Reset padding for some collapsible panels
 .panel-body {
     padding: 0;
@@ -452,6 +457,11 @@ header .search.container.navbar {
 // White background for year/volume and issue panel heading
 .yearVolPanelHeading, .issuePanelHeading {
     background-color: #fff !important;
+}
+
+// Normal font size for panel-titel in nested year/volume panel
+.yearVolPanelHeading .panel-title {
+    font-size: 15px !important;
 }
 
 // Margin for year/volume panel without a nested issue panel
@@ -476,6 +486,11 @@ header .search.container.navbar {
 // Some margins on panels
 .issuePanelBody, .yearVolSpacer {
     margin-left: 18px;
+}
+
+// Padding for panel body in provenance tab
+.provPanelBody {
+    padding-left: 18px;
 }
 
 // Smaller facet boxes on "advanced search" page for placing 5 containers side by side
