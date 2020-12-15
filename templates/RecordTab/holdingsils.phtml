@@ -1,6 +1,6 @@
 <?php
     // AK: Use custom "checkRequestIsValid" function as we use another button layout
-    // with out the fontawesome "flag" icon.
+    // without the fontawesome "flag" icon.
     $this->headScript()->appendFile("checkRequestIsValid.js");
 
     // Set up convenience variables:
@@ -324,67 +324,72 @@
                 </td>
               <?php endif; ?>
               <td>
-              <?php // Show account block message ?>
-              <?php if ($blocks): ?>
-                <?=$this->transEsc('account_block_no_holds')?>
-              <?php // Show location text ?>
-              <?php elseif ($item['locationtext']): ?>
-                <?=$this->transEsc($item['locationtext'])?>
-              <?php else: ?>
-                <?php // Show login button or warning about missing ILS account ?>
-                <?php if ($this->ils()->getHoldsMode() == 'driver' || $this->ils()->getTitleHoldsMode() == 'driver'): ?>
-                  <?php if ($account->loginEnabled() && $offlineMode != 'ils-offline'): ?>
-                    <?php if (!$user): ?>
-                      <?=$loginBtn?>
-                    <?php elseif (!$user->cat_username): ?>
-                      <span class="text-danger"><?=$this->transEsc('NoIlsAccountFound')?></span>
-                    <?php endif; ?>
-                  <?php endif; ?>
-                <?php endif; ?>
-
-                <?php // TODO: Check what happens when getHoldsMode or getTitleHoldsMode is not "driver" ?>
-                <?php // Show hold or recall buttons ?>
-                <?php if ($useTitleLevelHol): ?>
-                  <?php // Button for title level holds ?>
-                  <a class="placehold btn holIlsBtn" data-lightbox href="<?=$titleLevelReqUrl?>" title="<?=$requestPlaceText?>"><?=($isRecall) ? $recallThis : $placeAHold?></a>
+                <?php // AK: Show "holds disabled" message if activated in config.ini at config "holds_mode" ?>
+                <?php if ($this->ils()->getHoldsMode() == 'disabled_msg'): ?>
+                  <?=$this->transEsc('holds_disabled_msg')?>
                 <?php else: ?>
-                  <?php // Button for item level holds ?>
-                  <?php if ($item['link'] ?? false): ?>
-                    <?php // TODO: Show message if link is false! ?>
-                    <a class="<?=$check ? 'checkRequest disabled ' : ''?>placehold btn holIlsBtn" <?php if (!empty($item['linkLightbox'])): ?>data-lightbox <?php endif; ?>href="<?=$this->recordLink()->getRequestUrl($item['link'])?>"><i class="fa fa-spinner fa-pulse" aria-hidden="true"></i>&nbsp;<?=($check) ? $checkHold : (($isRecall) ? $recallThis : $placeAHold)?></a>
-                  <?php endif; ?>
-                  <?php if ($item['storageRetrievalRequestLink'] ?? false): ?>
-                    <a href="<?=$this->recordLink()->getRequestUrl($item['storageRetrievalRequestLink'])?>" data-lightbox class="btn holIlsBtn" title="<?=$this->transEsc('storage_retrieval_request_place_text')?>"><?=$this->transEsc('storage_retrieval_request_place_text')?></a>
-                  <?php endif; ?>
-                  <?php if ($item['ILLRequestLink'] ?? false): ?>
-                    <a href="<?=$this->recordLink()->getRequestUrl($item['ILLRequestLink'])?>" data-lightbox class="btn holIlsBtn" title="<?=$this->transEsc('ill_request_place_text')?>"><?=$this->transEsc('ill_request_place_text')?></a>
-                  <?php endif; ?>
-                  <?=$this->relais()->renderButtonIfActive($this->driver ?? null)?>
-                <?php endif; ?>
+                  <?php // Show account block message ?>
+                  <?php if ($blocks): ?>
+                    <?=$this->transEsc('account_block_no_holds')?>
+                  <?php // Show location text ?>
+                  <?php elseif ($item['locationtext']): ?>
+                    <?=$this->transEsc($item['locationtext'])?>
+                  <?php else: ?>
+                    <?php // Show login button or warning about missing ILS account ?>
+                    <?php if ($this->ils()->getHoldsMode() == 'driver' || $this->ils()->getTitleHoldsMode() == 'driver'): ?>
+                      <?php if ($account->loginEnabled() && $offlineMode != 'ils-offline'): ?>
+                        <?php if (!$user): ?>
+                          <?=$loginBtn?>
+                        <?php elseif (!$user->cat_username): ?>
+                          <span class="text-danger"><?=$this->transEsc('NoIlsAccountFound')?></span>
+                        <?php endif; ?>
+                      <?php endif; ?>
+                    <?php endif; ?>
 
-              <?php endif; ?>
+                    <?php // TODO: Check what happens when getHoldsMode or getTitleHoldsMode is not "driver" ?>
+                    <?php // Show hold or recall buttons ?>
+                    <?php if ($useTitleLevelHol): ?>
+                      <?php // Button for title level holds ?>
+                      <a class="placehold btn holIlsBtn" data-lightbox href="<?=$titleLevelReqUrl?>" title="<?=$requestPlaceText?>"><?=($isRecall) ? $recallThis : $placeAHold?></a>
+                    <?php else: ?>
+                      <?php // Button for item level holds ?>
+                      <?php if ($item['link'] ?? false): ?>
+                        <?php // TODO: Show message if link is false! ?>
+                        <a class="<?=$check ? 'checkRequest disabled ' : ''?>placehold btn holIlsBtn" <?php if (!empty($item['linkLightbox'])): ?>data-lightbox <?php endif; ?>href="<?=$this->recordLink()->getRequestUrl($item['link'])?>"><i class="fa fa-spinner fa-pulse" aria-hidden="true"></i>&nbsp;<?=($check) ? $checkHold : (($isRecall) ? $recallThis : $placeAHold)?></a>
+                      <?php endif; ?>
+                      <?php if ($item['storageRetrievalRequestLink'] ?? false): ?>
+                        <a href="<?=$this->recordLink()->getRequestUrl($item['storageRetrievalRequestLink'])?>" data-lightbox class="btn holIlsBtn" title="<?=$this->transEsc('storage_retrieval_request_place_text')?>"><?=$this->transEsc('storage_retrieval_request_place_text')?></a>
+                      <?php endif; ?>
+                      <?php if ($item['ILLRequestLink'] ?? false): ?>
+                        <a href="<?=$this->recordLink()->getRequestUrl($item['ILLRequestLink'])?>" data-lightbox class="btn holIlsBtn" title="<?=$this->transEsc('ill_request_place_text')?>"><?=$this->transEsc('ill_request_place_text')?></a>
+                      <?php endif; ?>
+                      <?=$this->relais()->renderButtonIfActive($this->driver ?? null)?>
+                    <?php endif; ?>
 
-                <?php
-                /*
-                // Schema.org
-                // TODO: Look at https://schema.org/Offer and add correct values.
-                <?php // Embed item structured data: library, barcode, call number ?>
-                <?php if ($item['location'] ?? false): ?>
-                  // TODO: "seller" should be the name of the library, not of the location.
-                  //       See https://schema.org/seller
-                  <meta property="seller" content="<?=$this->escapeHtmlAttr($item['location'])?>" />
+                  <?php endif; ?>
+
+                    <?php
+                    /*
+                    // Schema.org
+                    // TODO: Look at https://schema.org/Offer and add correct values.
+                    <?php // Embed item structured data: library, barcode, call number ?>
+                    <?php if ($item['location'] ?? false): ?>
+                      // TODO: "seller" should be the name of the library, not of the location.
+                      //       See https://schema.org/seller
+                      <meta property="seller" content="<?=$this->escapeHtmlAttr($item['location'])?>" />
+                    <?php endif; ?>
+                    <?php if ($item['barcode'] ?? false): ?>
+                      <meta property="serialNumber" content="<?=$this->escapeHtmlAttr($item['barcode'])?>" />
+                    <?php endif; ?>
+                    <?php if ($item['callnumber'] ?? false): ?>
+                      <meta property="sku" content="<?=$this->escapeHtmlAttr($item['callnumber'])?>" />
+                    <?php endif; ?>
+                    <?php // Declare that the item is to be borrowed, not for sale ?>
+                    <link property="businessFunction" href="http://purl.org/goodrelations/v1#LeaseOut" />
+                    <link property="itemOffered" href="#record" />
+                    */
+                    ?>
                 <?php endif; ?>
-                <?php if ($item['barcode'] ?? false): ?>
-                  <meta property="serialNumber" content="<?=$this->escapeHtmlAttr($item['barcode'])?>" />
-                <?php endif; ?>
-                <?php if ($item['callnumber'] ?? false): ?>
-                  <meta property="sku" content="<?=$this->escapeHtmlAttr($item['callnumber'])?>" />
-                <?php endif; ?>
-                <?php // Declare that the item is to be borrowed, not for sale ?>
-                <link property="businessFunction" href="http://purl.org/goodrelations/v1#LeaseOut" />
-                <link property="itemOffered" href="#record" />
-                */
-                ?>
               </td>
             </tr>
 
