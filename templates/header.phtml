@@ -85,6 +85,11 @@
     </div>
   <?php endif; ?>
 </div>
+
+<?php // AK: Show a header warning box ?>
+<?php $warnConf = $this->warnings()->getConfig(); ?>
+<?=(($warnConf['header'] ?? false) == true) ? $this->render('Helpers/warning.phtml', ['heading' => 'header_warning_heading', 'text' => 'header_warning_text']) : ''?>
+
 <?php if ($this->layout()->searchbox !== false): ?>
   <div class="search container navbar">
     <nav class="nav searchbox hidden-print">

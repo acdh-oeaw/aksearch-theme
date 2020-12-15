@@ -58,6 +58,10 @@
 <?php // Show info text if ILS is offline ?>
 <?=($offlineMode == "ils-offline") ? $this->render('Helpers/ils-offline.phtml', ['offlineModeMsg' => 'ils_offline_holdings_message']) : ''?>
 
+<?php // AK: Show a warning box in the "ILS holings" tab ?>
+<?php $warnConf = $this->warnings()->getConfig(); ?>
+<?=(($warnConf['holdingsils'] ?? false) == true) ? '<br />'.$this->render('Helpers/warning.phtml', ['heading' => 'holdingsils_warning_heading', 'text' => 'holdingsils_warning_text']) : ''?>
+
 <?php // Show URLs ?>
 <?php if (!empty($urls) || $openUrlActive || $doiActive): ?>
   <div class='holdings urls'>
