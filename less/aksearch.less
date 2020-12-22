@@ -552,7 +552,6 @@ header .search.container.navbar {
     .solr-newitem-facet {
         flex: 1 25%;
     }
-
 }
 
 @media (min-width:992px) {
@@ -567,3 +566,23 @@ header .search.container.navbar {
     }
 }
 
+
+/* For very small screens */
+@media (max-width:430px) {
+    // Scroll core details in details view
+    .record .media-body {
+        overflow: auto !important;
+    }
+}
+
+/* Tablet size screens and smaller */
+@media screen and (max-width:768px) {
+    // Scroll core details in details view
+    .record .media-body {
+        -moz-hyphens: auto;
+        -webkit-hyphens: auto;
+        -ms-hyphens: auto;
+        -o-hyphens: auto;
+        hyphens: auto;
+    }
+}
