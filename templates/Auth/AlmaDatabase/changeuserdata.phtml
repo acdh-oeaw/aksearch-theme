@@ -1,15 +1,17 @@
 <br />
 <div class="form-group">
-  <label class="control-label"><?=$this->transEsc('Phone Number')?>:</label>
-  <input type="text" name="phone" id="phone" class="form-control" value="<?=$this->userdata['phone']?>" />
+  <label class="control-label" for="phone"><?=$this->transEsc('Phone Number')?>:</label>
+  <input type="tel" pattern="\d*" name="phone" id="phone" class="form-control" value="<?=$this->escapeHtmlAttr($this->userdata['phone'])?>" />
+  <div class="help-block"><?=$this->transEsc('numeric_only')?></div>
 </div>
 
 <div class="form-group">
-  <label class="control-label"><?=$this->transEsc('Mobile Number')?>:</label>
-  <input type="text" name="mobile_phone" id="mobile_phone" class="form-control" value="<?=$this->userdata['mobile_phone']?>" />
+  <label class="control-label" for="mobile_phone"><?=$this->transEsc('Mobile Number')?>:</label>
+  <input type="tel" pattern="\d*" name="mobile_phone" id="mobile_phone" class="form-control" value="<?=$this->escapeHtmlAttr($this->userdata['mobile_phone'])?>" />
+  <div class="help-block"><?=$this->transEsc('numeric_only')?></div>
 </div>
 
 <div class="form-group">
-  <label class="control-label"><?=$this->transEsc('Email')?>:</label>
-  <input type="text" name="email" id="email" class="form-control" value="<?=$this->userdata['email']?>" />
+  <label class="control-label" for="email"><?=$this->transEsc('Email')?>:</label>
+  <input type="email" name="email" id="email" class="form-control" value="<?=$this->escapeHtmlAttr($this->userdata['email'])?>" required aria-required="true" />
 </div>
