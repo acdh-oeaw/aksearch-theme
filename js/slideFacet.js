@@ -118,7 +118,7 @@ function getAndProcessFacetsHtml(params) {
             setForwardClickHanlder(params);
         },
         'json'
-    ).error(function() {
+    ).fail(function() {
         console.error('ERROR when getting facet HTML!');
     });
 }
