@@ -35,7 +35,7 @@
   <?php // AK: Add class for better styling possiblities ?>
   <div class="media-body core-details">
     <?php // AK: Use "getWholeTitle" instead of "getShortTitle". Displays also subtitle and title section separated by colon. ?>
-    <h3 property="name"><?=$this->escapeHtml($this->driver->getWholeTitle())?></h3>
+    <h3 property="name"><?=$this->escapeHtml($this->driver->tryMethod('getWholeTitle', [], $this->transEsc('NoTitle')))?></h3>
     <?php if(!empty($this->extraControls)): ?>
       <?=$this->extraControls['actionControls'] ?? ''?>
       <?=$this->extraControls['availabilityInfo'] ?? ''?>
@@ -45,7 +45,7 @@
       <?=$this->record($this->driver)->renderTemplate('versions-link.phtml')?>
     <?php endif; ?>
     
-    <?php $summary = $this->driver->getSummary(); $summary = isset($summary[0]) ? $this->escapeHtml($summary[0]) : false; ?>
+    <?php $summary = $this->driver->tryMethod('getSummary', [], []); $summary = isset($summary[0]) ? $this->escapeHtml($summary[0]) : false; ?>
     <?php if ($summary): ?>
       <p><?=$this->truncate($summary, 300)?></p>
 

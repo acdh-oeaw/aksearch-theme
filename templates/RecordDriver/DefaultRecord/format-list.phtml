@@ -3,12 +3,12 @@
 $translated = [];
 
 // AK: Get translated forms so that we can get unique values below
-foreach($this->driver->getForms() ?? [] as $form) {
+foreach($this->driver->tryMethod('getForms') ?? [] as $form) {
   $translated[] = $this->transEsc($form);
 }
 
 // AK: Get translated carriers so that we can get unique values below
-foreach($this->driver->getCarriers() ?? [] as $carrier) {
+foreach($this->driver->tryMethod('getCarriers') ?? [] as $carrier) {
   $translated[] = $this->transEsc($carrier);
 }
 

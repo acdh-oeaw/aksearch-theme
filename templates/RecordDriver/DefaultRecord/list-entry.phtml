@@ -49,18 +49,18 @@
         // the ellipsis is not shown. Maybe we could use flexbox, but we have to test it in IE11.
         ?>
         <div class="resultItemLine2">
-          <?php if($this->driver->isCollection()): ?>
-            <?=implode('<br>', array_map([$this, 'escapeHtml'], $this->driver->getSummary())); ?>
+          <?php if($this->driver->tryMethod('isCollection')): ?>
+            <?=implode('<br>', array_map([$this, 'escapeHtml'], $this->driver->tryMethod('getSummary') ?? [])); ?>
           <?php else: ?>
             <?php // AK: Space between title (and parent data if applicable) and the rest of the data ?>
             <div class="spacer">
               <?php // AK: Show parent data. Replaces "Published in" from original VuFind code. ?>
-              <?php foreach ($data = ($this->driver->getConsolidatedParents() ?? []) as $key => $value): ?>
+              <?php foreach ($data = ($this->driver->tryMethod('getConsolidatedParents') ?? []) as $key => $value): ?>
                 <?php // AK: Get some values about the parent if there is one
                   $pntVolNo = $value['volNo'] ?? null;
                   $pntTitle = $value['title'] ?? null;
                   $pntId    = $value['id'] ?? null;
-                  $isDepLit = strpos(strtolower($this->driver->getFormat()), 'dependentliterature') === false ? false : true;
+                  $isDepLit = strpos(strtolower($this->driver->tryMethod('getFormat') ?? ''), 'dependentliterature') === false ? false : true;
                 ?>
                 <?php if ($pntTitle): ?>
                   <span title="<?=((!$isDepLit && $pntVolNo) ? $this->transEsc('volume').' '.$this->escapeHtml($pntVolNo).' '.$this->transEsc('from') : $this->transEsc('In')) .': '.$this->escapeHtml($pntTitle)?>">
@@ -73,7 +73,7 @@
             </div>
                 
             <?php // AK: Getting all contributors ?>
-            <?php $summAuthors = $this->driver->getContributors(); if (!empty($summAuthors)): ?>
+            <?php $summAuthors = $this->driver->tryMethod('getContributors'); if (!empty($summAuthors)): ?>
               <span title="<?=implode('; ', $summAuthors)?>">
                 <b><?=$this->transEsc('participants')?>:</b>
                 <?php $authorCount = count($summAuthors); ?>
@@ -84,19 +84,19 @@
               <br />
             <?php endif; ?>
 
-            <?php $summDate = $this->driver->getPublicationDates(); ?>
+            <?php $summDate = $this->driver->tryMethod('getPublicationDates'); ?>
             <?php if (!empty($summDate)): ?>
               <b><?=$this->transEsc('Published')?>:</b> <?=$this->escapeHtml(implode('; ', $summDate))?>
               <br />
             <?php endif; ?>
 
-            <?php $summPublishers = $this->driver->getPublishers(); ?>
+            <?php $summPublishers = $this->driver->tryMethod('getPublishers'); ?>
             <?php if (!empty($summPublishers)): ?>
               <b><?=$this->transEsc('Publisher')?>:</b> <?=join('; ', $summPublishers)?>
               <br />
             <?php endif; ?>
 
-            <?php $summInCollection = $this->driver->getContainingCollections(); if (!empty($summInCollection)): ?>
+            <?php $summInCollection = $this->driver->tryMethod('getContainingCollections'); if (!empty($summInCollection)): ?>
               <?php foreach ($summInCollection as $collId => $collText): ?>
                 <div>
                   <b><?=$this->transEsc("in_collection_label")?></b>
@@ -111,8 +111,8 @@
         </div>
 
         <div class="last">
-          <?php if(!$this->driver->isCollection()) {
-              if ($snippet = $this->driver->getHighlightedSnippet()) {
+          <?php if(!$this->driver->tryMethod('isCollection')) {
+              if ($snippet = $this->driver->tryMethod('getHighlightedSnippet')) {
                 if (!empty($snippet['caption'])) {
                   echo '<strong>' . $this->transEsc($snippet['caption']) . ':</strong> ';
                 }
@@ -126,7 +126,7 @@
           <?php
           /*
           <div class="callnumAndLocation ajax-availability hidden">
-            <?php if ($this->driver->supportsAjaxStatus()): ?>
+            <?php if ($this->driver->tryMethod('supportsAjaxStatus')): ?>
               <strong class="hideIfDetailed"><?=$this->transEsc('Call Number')?>:</strong>
               <span class="callnumber ajax-availability hidden">
                 <?=$this->transEsc('Loading')?>...<br/>
@@ -137,7 +137,7 @@
               </span>
               <div class="locationDetails"></div>
             <?php else: ?>
-              <?php $summCallNo = $this->driver->getCallNumber(); if (!empty($summCallNo)): ?>
+              <?php $summCallNo = $this->driver->tryMethod('getCallNumber'); if (!empty($summCallNo)): ?>
                 <strong><?=$this->transEsc('Call Number')?>:</strong> <?=$this->escapeHtml($summCallNo)?>
               <?php endif; ?>
             <?php endif; ?>
@@ -169,7 +169,7 @@
               <?php endif; ?>
 
               <?php // AK: Custom URL display ?>
-              <?php if (!is_array($urls)) $urls = []; if(!$this->driver->isCollection()): ?>
+              <?php if (!is_array($urls)) $urls = []; if(!$this->driver->tryMethod('isCollection')): ?>
               <b><?=$this->transEsc('links')?>:</b>
               <?php $urlCount = count($urls); foreach ($urls as $i => $current): ?>
                 <?php // TODO: AK: These are not only fulltext URLs! ?>
@@ -178,7 +178,7 @@
               <?php endif; ?>
 
               <?php // AK: Display access note ?>
-              <?php if (!empty($accessNotes = $this->driver->getAccessNotes())): ?>
+              <?php if (!empty($accessNotes = $this->driver->tryMethod('getAccessNotes'))): ?>
                 <br/>
                 <b><?=$this->transEsc('access_note')?>:</b>
                 <?=$this->escapeHtml(implode('; ', $accessNotes))?>
@@ -194,7 +194,7 @@
           <?php // AK: We don't show availability status (yet) ?>
           <?php
           /*
-          <?php if (!$openUrlActive && empty($urls) && $this->driver->supportsAjaxStatus()): ?>
+          <?php if (!$openUrlActive && empty($urls) && $this->driver->tryMethod('supportsAjaxStatus')): ?>
             <span class="status ajax-availability hidden"><?=$this->transEsc('Loading')?>...</span>
             <br/><br/>
           <?php endif; ?>
