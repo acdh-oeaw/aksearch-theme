@@ -554,7 +554,8 @@ header .search.container.navbar {
     }
 
     .akSearchboxBackground #searchForm_lookfor {
-        width: 40%; // Stretching the searchbox
+        max-width: none; // Overwrite default "max-width" so that "width" parameter takes effect
+        width: 45%; // Stretching the searchbox
     }
 
     // Wrapper for facet boxes on the new items search page 
