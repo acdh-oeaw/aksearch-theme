@@ -15,6 +15,11 @@ a {
     text-decoration: none; // Remove underline from links
 }
 
+// Setting overall width
+.container {
+    width: 85%;
+}
+
 .navbar-brand {
     height: auto; // Making space for AKsearch Logo
     padding-left: 0; // Align AKsearch Logo with Search field
@@ -82,6 +87,35 @@ header .search.container.navbar {
     padding-bottom: 0;
     padding-left: 8px;
     border-radius: 0px;
+}
+
+// Default inline display for wrappers for the main search tools
+// This is for a better styling on mobile devices (switch to "flex"
+// on smaller screens - see media queries below).
+#searchForm_options_wrapper {
+    display: inline;
+}
+#searchForm_execute_wrapper {
+    display: inline;
+}
+// Prepare searchbox for "X" button that clears the input of the searchbox
+.akSearchboxBackground #searchForm_lookfor {
+    max-width: none; // Overwrite default "max-width" so that "width" parameter takes effect
+    width: 100%; // Stretching the searchbox within its container
+    padding-right: 35px; // Add padding for the "x" button that clears the input of the searchbox
+}
+// Wrapper for the search box and the "X" button that clears the input of the searchbox
+#searchForm_lookfor_wrapper {
+    display: flex;
+    width: 45%;
+    margin-right: 15px;
+    align-items: center;
+    float: left;
+}
+// Searchbox clear button
+#searchForm_lookfor_clear {
+    cursor: pointer;
+    margin-left: -30px;
 }
 
 // Make search button (magnifying glass button) bigger
@@ -332,6 +366,11 @@ header .search.container.navbar {
 	outline: none;
 }
 
+// Wrapper for facet boxes on the new items search page 
+.solr-newitem-facet {
+    flex: 1 25%;
+}
+
 // Stretching facet select boxes on new items search page and adding some space
 // below them for better layout
 .solr-newitem-facet select {
@@ -546,47 +585,54 @@ header .search.container.navbar {
 }
 
 
-// Style for other screen sizes
-@media (min-width:768px) {
-    .container {
-        width: 85%; // Overall width
-        
+// #################################
+// # Styles for other screen sizes #
+// #################################
+
+// Smaller desktops
+@media (max-width:992px) {
+    // Searchbox, clear-button "x" and dropdown
+    #searchForm_options_wrapper {
+        display: flex;
+        width: 100%;
     }
 
-    .akSearchboxBackground #searchForm_lookfor {
-        max-width: none; // Overwrite default "max-width" so that "width" parameter takes effect
-        width: 45%; // Stretching the searchbox
+    // Maximize the size of the search box
+    #searchForm_lookfor_wrapper {
+        flex-grow: 50
+    }
+    .akSearchboxBackground #searchForm_type {
+        flex-grow: 1;
     }
 
-    // Wrapper for facet boxes on the new items search page 
-    .solr-newitem-facet {
-        flex: 1 25%;
+    // Searchbox clear button
+    #searchForm_lookfor_clear {
+        cursor: pointer;
+        margin-left: -30px;
+    }
+
+    // Search button and "advanced" link
+    #searchForm_execute_wrapper {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        margin-top: 8px;
+        justify-content: center;
+    }
+    .akSearchboxBackground .btn-primary {
+        margin-left: 0px;
+        width: 20%;
     }
 }
 
-@media (min-width:992px) {
-    .container {
-        width: 85%; // Overall width
-    }
-}
-
-@media (min-width:1200px) {
-    .container {
-        width: 85%; // Overall width
-    }
-}
-
-
-/* For very small screens */
-@media (max-width:430px) {
-    // Scroll core details in details view
-    .record .media-body {
-        overflow: auto !important;
-    }
-}
-
-/* Tablet size screens and smaller */
+// Tablet size screens and smaller - inherits from "@media (max-width:992px)"
 @media screen and (max-width:768px) {
+
+    // Wider container to get more space for all contents
+    .container {
+        width: 95%;
+    }
+
     // Scroll core details in details view
     .record .media-body {
         -moz-hyphens: auto;
@@ -594,5 +640,37 @@ header .search.container.navbar {
         -ms-hyphens: auto;
         -o-hyphens: auto;
         hyphens: auto;
+    }
+
+    // Maximize the size of the search box
+    .akSearchboxBackground #searchForm_type {
+        width: 30%;
+    }
+
+    // Better position and style of mobile menu
+    header #header-collapse .navbar-right {
+        width: 50%;
+        float: right;
+    }
+    header #header-collapse .navbar-right li {
+        text-align: right;
+    }
+    #header-collapse {
+        position: relative;
+        // TODO: Could that be styled better without exact px values?
+        top: -60px;
+        padding-right: 26px;
+    }
+}
+
+// For very small screens - inherits from "@media (max-width:992px)" and "@media screen and (max-width:768px)"
+@media (max-width:450px) {
+    // Wider container to get more space for all contents
+    .container {
+        width: 100%;
+    }
+    // Horizontal scroll for core details in details view because they get clipped off.
+    .record .media-body {
+        overflow: auto !important;
     }
 }
