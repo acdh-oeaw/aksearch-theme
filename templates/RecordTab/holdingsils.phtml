@@ -198,7 +198,6 @@
     <h3>Exemplare / Bindeeinheiten</h3>
 
     <?php foreach ($holdings['holdings'] ?? [] as $holding): ?>
-
       <h4>
         <?php $locationName = $this->transEsc('location_' . $holding['location_external_name'], [], $holding['location_external_name']); ?>
         <?php if (isset($holding['locationhref']) && $holding['locationhref']): ?>
@@ -288,16 +287,26 @@
               <?php endif; ?>
               <?php if ($hasItemNotes): ?>
                 <td>
-                  <?php if(!empty($item['item_notes']) && count($item['item_notes'])>1): ?>
+                  <?php if (is_string($item['item_notes'])): ?>
+
                     <div class="item-notes">
-                      <ul>
-                        <?php foreach ($item['item_notes'] as $item_note): ?>
-                          <li><?=$this->escapeHtml($item_note) ?></li>
-                        <?php endforeach; ?>
-                      </ul>
+                      <?=$this->escapeHtml($item['item_notes']) ?>
                     </div>
-                  <?php else: ?>
-                    <?=$this->escapeHtml($item['item_notes'][0]) ?>
+
+                  <?php elseif (is_array($item['item_notes'])): ?>
+
+                    <?php if(!empty($item['item_notes']) && count($item['item_notes'])>1): ?>
+                      <div class="item-notes">
+                        <ul>
+                          <?php foreach ($item['item_notes'] as $item_note): ?>
+                            <li><?=$this->escapeHtml($item_note) ?></li>
+                          <?php endforeach; ?>
+                        </ul>
+                      </div>
+                    <?php else: ?>
+                      <?=$this->escapeHtml($item['item_notes'][0]) ?>
+                    <?php endif;?>
+
                   <?php endif;?>
                 </td>
               <?php endif; ?>
@@ -333,7 +342,16 @@
                     <?=$this->transEsc('account_block_no_holds')?>
                   <?php // Show location text ?>
                   <?php elseif ($item['locationtext']): ?>
-                    <?=$this->transEsc($item['locationtext'])?>
+                    <?php
+                      $locationtext = $this->transEsc($item['locationtext']);
+                      // AK: Allow links with "href" and "target" attributes
+                      $locationtext = str_replace("&lt;/a&gt;", "</a>", $locationtext);
+                      $locationtext = str_replace("&lt;a", "<a", $locationtext);
+                      $locationtext = preg_replace('/href\s*=\s*(&apos;|&quot;|&#039;)\s*([a-zA-Z0-9:_\-\/\.]+)\s*(&apos;|&quot;|&#039;)/', 'href="$2"', $locationtext);
+                      $locationtext = preg_replace('/target\s*=\s*(&apos;|&quot;|&#039;)\s*([a-zA-Z0-9:_\-\/\.]+)\s*(&apos;|&quot;|&#039;)/', 'target="$2"', $locationtext);
+                      $locationtext = str_replace("&gt;", ">", $locationtext);
+                    ?>
+                    <?=$locationtext?>
                   <?php else: ?>
                     <?php // Show login button or warning about missing ILS account ?>
                     <?php if ($this->ils()->getHoldsMode() == 'driver' || $this->ils()->getTitleHoldsMode() == 'driver'): ?>
