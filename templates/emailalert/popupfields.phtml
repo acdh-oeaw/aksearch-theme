@@ -1,0 +1,23 @@
+<?php
+// Get data from JavaScript
+$facets = json_decode($this->facets);
+$scheduleOptions = json_decode($this->scheduleOptions);
+?>
+<?php
+// Get the necessary data (facets and schedule options) in HTML controls and
+// finally display them in popup.phtml (this is done in JavaScript).
+?>
+<?php foreach ($facets as $facetField => $facetData): ?>
+    <h3><?=$this->transEsc($facetData->data->label)?></h3>
+    <select name="filter[]" size="15" style="width: 100%;" required>
+        <?php foreach ($facetData->data->list as $facetItem): ?>
+            <option value='~<?=$this->escapeHtmlAttr($facetField)?>:"<?=$this->escapeHtmlAttr($facetItem->value)?>"'><?=$this->transEsc($facetItem->displayText)?></option>
+        <?php endforeach; ?>
+    </select>
+<?php endforeach; ?>
+<h3><?=$this->transEsc('email_alert_frequency')?></h3>
+<select name="scheduleOptions" size="1" style="width: 100%;" required>
+    <?php foreach ($scheduleOptions as $scheduleOptionValue => $scheduleOptionDisplayText): ?>
+        <option value="<?=$this->escapeHtmlAttr($scheduleOptionValue)?>"><?=$this->transEsc($scheduleOptionDisplayText)?></option>
+    <?php endforeach; ?>
+</select>

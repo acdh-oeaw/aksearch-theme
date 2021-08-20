@@ -1,0 +1,37 @@
+<h2><?=$this->transEsc('email_alert_popup_title')?></h2>
+<p><?=$this->transEsc('email_alert_popup_text1')?></p>
+<p><?=$this->transEsc('email_alert_popup_text2')?></p>
+<?php // The "action" is the path to a controller action. ?>
+<form name="email_alert" action="<?=$this->url('emailalert-processor')?>" method="post">
+    <?php
+    // The data to display (facets, schedule options) are loaded with javascript 
+    // (see emailAlertPopupGetData.js) and will then be inserted into the div below.
+    ?>
+    <div id="email-alert-data">
+        <?php // Show loading spinner until data are loaded ?>
+        <div style="text-align: center;">
+            <i class="fa fa-spinner fa-pulse fa-2x"></i>
+        </div>
+    </div>
+    <br /><br />
+    <p>
+        <div style="display: flex; justify-content: space-between;">
+            <button type="submit" name="cancelpopup" class="btn" formnovalidate><?=$this->transEsc('email_alert_cancel')?></button>
+            <button type="submit" name="subscribe" class="btn"><?=$this->transEsc('email_alert_subscribe')?></button>
+        </div>
+    </p>
+</form>
+<?php
+    // Check if the user is logged in and overwrite the variable from layout.phtml.
+    // This is necessary because the emailAlertPopupGetData.js script will check
+    // if the user is logged in, and if he/she just came from a login process and was
+    // forwarded here, the variable in layout.phtml will still be on "false" which
+    // will prevent the data to load.
+    if ($this->userIsLoggedIn === true) {
+        $this->inlineScript()->prependScript('var userIsLoggedIn = true;');
+    }
+
+    // Append JS for getting data to display facets and schedule options. Data will
+    // only be loaded if JS variable "userIsLoggedIn" is "true" (see also above).
+    echo $this->inlineScript()->appendFile('emailAlertPopupGetData.js');
+?>

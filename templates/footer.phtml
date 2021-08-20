@@ -19,6 +19,11 @@
           <?php /* <li><a href="<?=$this->url('channels-home')?>"><?=$this->transEsc('channel_explore')?></a></li>
           <li><a href="<?=$this->url('search-reserves')?>"><?=$this->transEsc('Course Reserves')?></a></li> */ ?>
           <li><a href="<?=$this->url('search-newitem')?>"><?=$this->transEsc('New Items')?></a></li>
+          <?php // AK: Open the "email alert popup" if, but display the link only if configured to do so. ?>
+          <?php $accountConf = $this->emailalertpopup()->getConfig(); ?>
+          <?php if (($accountConf['schedule_searches'] ?? false) && ($accountConf['scheduled_search_popup'] ?? false)): ?>
+            <li><a href="<?=$this->url('emailalert-processor')?>" data-lightbox><?=$this->transEsc('email_alert')?></a></li>
+          <?php endif; ?>
         </ul>
       <?=$this->slot('footer-center')->end(); ?>
     </div>

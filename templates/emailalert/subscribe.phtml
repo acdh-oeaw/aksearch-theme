@@ -1,0 +1,16 @@
+<h2><?=$this->transEsc('email_alert_popup_title')?></h2>
+<?php // Display success message if subscribing to email alerts was successful ?>
+<?php if ($this->success): ?>
+    <div class="alert-success alert"><?=$this->transEsc('email_alert_subscribe_success_alert')?></div>
+    <p><?=$this->transEsc('email_alert_subscribe_success_text_1')?></p>
+    <p><?=$this->transEsc('email_alert_subscribe_success_text_2')?></p>
+<?php // Display error message if subscribing to email alerts was not successful ?>
+<?php else: ?>
+    <div class="alert-danger alert"><?=$this->transEsc('email_alert_subscribe_error_alert')?></div>
+    <p><?=$this->transEsc('email_alert_subscribe_error_text_1')?></p>
+    <p><?=$this->transEsc('email_alert_subscribe_error_text_2')?></p>
+<?php endif; ?>
+<div style="text-align: right;">
+    <button class="btn btn-default lightbox-only float-right" data-dismiss="modal"><?=$this->translate('close') ?></button>
+</div>
+

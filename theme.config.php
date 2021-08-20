@@ -5,6 +5,7 @@ return [
     'helpers' => [
       'factories' => [
         'AkSearch\View\Helper\AkSearch\Datepicker' => 'AkSearch\View\Helper\AkSearch\DatepickerFactory',
+        'AkSearch\View\Helper\AkSearch\EmailAlertPopup' => 'AkSearch\View\Helper\AkSearch\EmailAlertPopupFactory',
         'AkSearch\View\Helper\AkSearch\Warnings' => 'AkSearch\View\Helper\AkSearch\WarningsFactory',
         'AkSearch\View\Helper\Root\AccountMenu' => 'AkSearch\View\Helper\Root\AccountMenuFactory',
         'AkSearch\View\Helper\Root\Auth' => 'VuFind\View\Helper\Root\AuthFactory',
@@ -17,6 +18,7 @@ return [
         'accountMenu' => 'AkSearch\View\Helper\Root\AccountMenu',
         'auth' => 'AkSearch\View\Helper\Root\Auth',
         'datepicker' => 'AkSearch\View\Helper\AkSearch\Datepicker',
+        'emailalertpopup' => 'AkSearch\View\Helper\AkSearch\EmailAlertPopup',
         'searchbox' => 'AkSearch\View\Helper\Root\SearchBox',
         'warnings' => 'AkSearch\View\Helper\AkSearch\Warnings',
 
@@ -27,6 +29,7 @@ return [
     ],
     'js' => [
         'lightbox.js',
+        'emailAlertPopup.js',
         'vendor/klaro/klaro-config.js',
         'vendor/klaro/klaro.js'
     ],
