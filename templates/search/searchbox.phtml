@@ -7,10 +7,6 @@
 
     // Load search actions and settings (if any):
     $options = $this->searchOptions($this->searchClassId);
-    $handlers = $this->searchbox()->getHandlers(
-        $this->searchClassId, $this->searchIndex ?? null
-    );
-    $handlerCount = count($handlers);
     $basicSearch = $this->searchbox()->combinedHandlersActive() ? 'combined-searchbox' : $options->getSearchAction();
     $searchHome = $options->getSearchHomeAction();
     $advSearch = $options->getAdvancedSearchAction();
@@ -27,6 +23,14 @@
     }
     $hiddenFilterParams = $this->searchTabs()->getCurrentHiddenFilterParams($this->searchClassId, $ignoreHiddenFilterMemory, '?');
 
+    // AK: Get handlers for active search tab
+    $searchTypeForTabConfig = ($this->searchType == 'advanced_searchform') ? 'advanced' : $this->searchType; // AK: Handle special case "advanced_searchform" for showing tabs on the advances search form screen
+    $tabConfig = $this->searchTabs()->getTabConfig($this->searchClassId, $this->lookfor, $this->searchIndex, $searchTypeForTabConfig, $hiddenFilters);
+    $handlers = $this->searchbox()->getHandlers(
+      $this->searchClassId, $this->searchIndex ?? null, $tabConfig['selected'] ?? null
+    );
+    $handlerCount = count($handlers);
+
     if (!isset($this->filterList) || !isset($this->checkboxFilters)) {
         $params = $this->searchMemory()->getLastSearchParams($this->searchClassId);
         $filterList = $params->getFilterList(true);
@@ -38,14 +42,19 @@
     $filterDetails = $this->searchbox()->getFilterDetails($filterList, $checkboxFilters);
     $showFilters = $filterDetails && (isset($results) || $options->getRetainFilterSetting());
 ?>
-<?php $tabConfig = $this->searchTabs()->getTabConfig($this->searchClassId, $this->lookfor, $this->searchIndex, $this->searchType, $hiddenFilters); ?>
+
 <?php if ($this->searchType == 'advanced'): ?>
   <div class="navbar-form navbar-left flip">
     <?php $tabs = $this->context($this)->renderInContext('search/searchTabs', ['searchTabs' => $tabConfig['tabs']]); ?>
     <?php if (!empty($tabs)): ?><?=$tabs ?><div class="tab-content clearfix"><?php endif; ?>
       <p class="adv_search_terms"><?=$this->transEsc("Your search terms")?>: "<strong><?=$this->escapeHtml($this->lookfor)?></strong>"</p>
       <p class="adv_search_links">
-        <a href="<?=$this->url($advSearch)?>?edit=<?=$this->escapeHtmlAttr($this->searchId)?>"><?=$this->transEsc("Edit this Advanced Search")?></a> |
+        <?php // AK: Add hidden filters on link to edit advanced search when we have search tabs ?>
+        <?php if (!empty($tabs)): ?>
+          <a href="<?=$this->url($advSearch)?><?=(!empty($hiddenFilterParams)) ? $hiddenFilterParams.'&edit='.$this->escapeHtmlAttr($this->searchId) : '?edit='.$this->escapeHtmlAttr($this->searchId)?>"><?=$this->transEsc("Edit this Advanced Search")?></a> |
+        <?php else: ?>
+          <a href="<?=$this->url($advSearch)?>?edit=<?=$this->escapeHtmlAttr($this->searchId)?>"><?=$this->transEsc("Edit this Advanced Search")?></a> |
+        <?php endif; ?>
         <a href="<?=$this->url($advSearch) . $hiddenFilterParams?>"><?=$this->transEsc("Start a new Advanced Search")?></a> |
         <a href="<?=$this->url($searchHome) . $hiddenFilterParams?>"><?=$this->transEsc("Start a new Basic Search")?></a>
       </p>
@@ -61,6 +70,13 @@
         ]
       );?>
     <?php if (!empty($tabs)): ?></div><?php endif; ?>
+  </div>
+<?php elseif ($this->searchType == 'advanced_searchform'): ?>
+  <?php // AK: Special layout for advanced search form screen when search tabs are activated. We only show tabs without any other information.
+  // The searchType "advanced_searchform" comes from search/advanced/layout.phtml ?>
+  <div class="navbar-form navbar-left flip advanced-searchform-tabs">
+    <?php $tabs = $this->context($this)->renderInContext('search/searchTabs', ['searchTabs' => $tabConfig['tabs']]); ?>
+    <?php if (!empty($tabs)): ?><?=$tabs?><?php endif; ?>
   </div>
 <?php else: ?>
   <form id="searchForm" class="searchForm navbar-form navbar-left flip" method="get" action="<?=$this->url($basicSearch)?>" name="searchForm" autocomplete="off">
@@ -112,7 +128,16 @@
         ?>
       </button>
       <?php if ($advSearch): ?>
-        <a href="<?=$this->url($advSearch) . (($this->searchId ?? false) ? '?edit=' . $this->escapeHtmlAttr($this->searchId) : $hiddenFilterParams) ?>" class="btn btn-link" rel="nofollow"><?=$this->transEsc("Advanced")?></a>
+        <?php // AK: Add hidden filters on link to advanced search when we have search tabs ?>
+        <?php
+        // Default link to advanced search
+        $advSearchLink = $this->url($advSearch) . (($this->searchId ?? false) ? '?edit=' . $this->escapeHtmlAttr($this->searchId) : $hiddenFilterParams);
+        if (!empty($tabConfig['tabs'])) {
+          // If tabs are configured, add the hidden filters to it
+          $advSearchLink = $this->url($advSearch) . (($this->searchId ?? false) ? $hiddenFilterParams . '&edit=' . $this->escapeHtmlAttr($this->searchId) : $hiddenFilterParams);
+        }
+        ?>
+        <a href="<?=$advSearchLink?>" class="btn btn-link" rel="nofollow"><?=$this->transEsc("Advanced")?></a>
       <?php endif; ?>
       <?php if ($geoUrl = $this->geocoords()->getSearchUrl($options)) : ?>
           <a href="<?=$geoUrl ?>" class="btn btn-link"><?=$this->transEsc('Geographic Search')?></a>
