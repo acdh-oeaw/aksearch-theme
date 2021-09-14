@@ -11,7 +11,7 @@ $(document).ready(function() {
         var query = window.location.href.split('?')[1] ?? '';
 
         $.getJSON(
-            '/AJAX/JSON?' + query,
+            VuFind.path + '/AJAX/JSON?' + query,
             {
                 method: 'getEmailAlertData',
                 action: 'checkOpeningPopup'

@@ -26,7 +26,7 @@ $(document).ready(function() {
             facetOperator: 'AND'
         };
         $.getJSON(
-            '/AJAX/JSON',
+            VuFind.path + '/AJAX/JSON',
             request,
             function success(response) {
                 if (response.hasOwnProperty('data')) {
