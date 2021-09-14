@@ -10,6 +10,7 @@ return [
         'AkSearch\View\Helper\Root\AccountMenu' => 'AkSearch\View\Helper\Root\AccountMenuFactory',
         'AkSearch\View\Helper\Root\Auth' => 'VuFind\View\Helper\Root\AuthFactory',
         'AkSearch\View\Helper\Root\Citation' => 'VuFind\View\Helper\Root\CitationFactory',
+        'AkSearch\View\Helper\Root\ContentBlock' => 'Laminas\ServiceManager\Factory\InvokableFactory',
         'AkSearch\View\Helper\Root\Record' => 'VuFind\View\Helper\Root\RecordFactory',
         'AkSearch\View\Helper\Root\SearchBox' => 'AkSearch\View\Helper\Root\SearchBoxFactory',
         'VuFind\View\Helper\Root\RecordDataFormatter' => 'AkSearch\View\Helper\Root\RecordDataFormatterFactory'
@@ -17,6 +18,7 @@ return [
       'aliases' => [
         'accountMenu' => 'AkSearch\View\Helper\Root\AccountMenu',
         'auth' => 'AkSearch\View\Helper\Root\Auth',
+        'contentBlock' => 'AkSearch\View\Helper\Root\ContentBlock',
         'datepicker' => 'AkSearch\View\Helper\AkSearch\Datepicker',
         'emailalertpopup' => 'AkSearch\View\Helper\AkSearch\EmailAlertPopup',
         'searchbox' => 'AkSearch\View\Helper\Root\SearchBox',

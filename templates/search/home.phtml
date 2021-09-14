@@ -30,4 +30,19 @@
 <?php $warnConf = $this->warnings()->getConfig(); ?>
 <?=(($warnConf['homepage'] ?? false) == true) ? '<br />'.$this->render('Helpers/warning.phtml', ['heading' => 'homepage_warning_heading', 'text' => 'homepage_warning_text']) : ''?>
 
+<?php
+// AK: Get currently selected search tab and add it to the content block array. We then can use it to
+// get custom homepage facets that depend on the selected tab.
+$hiddenFilters = $this->searchTabs()->getHiddenFilters($this->searchClassId, true, false);
+$tabConfig = $this->searchTabs()->getTabConfig($this->searchClassId, null, null, 'basic', $hiddenFilters);
+if (!empty($tabConfig['tabs'])) {
+  foreach ($blocks as $block) {
+    if (is_a($block, '\VuFind\ContentBlock\FacetList')) {
+      $block->activeSearchTab = $tabConfig['selected'];
+    }
+  }
+}
+?>
+
+<?php // AK: Info: This calls "ContentBlock" view helper on each "block" in $blocks. The blocks are defined in searches.ini in [HomePage] section. ?>
 <?=implode('', array_map([$this, 'contentBlock'], $blocks ?? []))?>
