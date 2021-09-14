@@ -32,7 +32,7 @@ $(document).ready(function() {
         // Execute query to get the HTML for the popup
         $.get(
             // Query the template with GET params
-            '/AJAX/JSON',
+            VuFind.path + '/AJAX/JSON',
             {
                 method: 'getEmailAlertPopupTemplate',
                 action: 'getMainTemplate'
