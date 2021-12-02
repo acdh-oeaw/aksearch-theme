@@ -56,7 +56,9 @@
               <?php if ($pntTitle): ?>
                 <span title="<?=((!$isDepLit && $pntVolNo) ? $this->transEsc('volume').' '.$this->escapeHtml($pntVolNo).' '.$this->transEsc('from') : $this->transEsc('In')) .': '.$this->escapeHtml($pntTitle)?>">
                   <?=((!$isDepLit && $pntVolNo) ? $this->transEsc('volume').' <i>'.$this->escapeHtml($pntVolNo).'</i> '.$this->transEsc('from') : $this->transEsc('In')).': '?>
-                  <a href="<?=($pntId ? $this->recordLink()->getUrl("$containerSource|$pntId") : $this->record($this->driver)->getLink('title', str_replace(['{{{{START_HILITE}}}}', '{{{{END_HILITE}}}}'], '', $pntTitle)))?>"><?=$this->highlight($pntTitle)?></a>
+                  <?php // AK: Execute search in parent title field if no ID is given (see "link-parenttitle.phtml").
+                        // If we have an ID, link directly to the record details page with the given ID. ?>
+                  <a href="<?=($pntId ? $this->recordLink()->getUrl("$containerSource|$pntId") : $this->record($this->driver)->getLink('parenttitle', str_replace(['{{{{START_HILITE}}}}', '{{{{END_HILITE}}}}'], '', $pntTitle)))?>"><?=$this->highlight($pntTitle)?></a>
                 </span>
                 <br />
               <?php endif; ?>

@@ -1,0 +1,6 @@
+<?php $searchRoute = $this->searchOptions($this->driver->getSourceIdentifier())->getSearchAction(); ?>
+<?php // AK: Search URL for executing a search in parent title data. This is used for
+      // the parent title that is displayed in the search result list, e. g. for
+      // Journal articles ("published in: <a href='URL_HERE'>...</a>").
+?>
+<?=$this->url($searchRoute)?>?lookfor=<?=urlencode($this->lookfor)?>&amp;type=ParentTitle
