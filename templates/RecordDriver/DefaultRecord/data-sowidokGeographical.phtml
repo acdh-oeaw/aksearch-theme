@@ -1,0 +1,4 @@
+<?php foreach ($data as $geographical): ?>
+    <a title="<?=$this->escapeHtmlAttr($geographical)?>" href="<?=$this->record($this->driver)->getLink('sowidokGeographical', $geographical)?>" rel="nofollow"><?=trim($this->escapeHtml($geographical))?></a>
+    <br />
+<?php endforeach; ?>

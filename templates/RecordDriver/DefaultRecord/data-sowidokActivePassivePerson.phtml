@@ -1,0 +1,4 @@
+<?php foreach ($data as $activePassivePerson): ?>
+    <a title="<?=$this->escapeHtmlAttr($activePassivePerson)?>" href="<?=$this->record($this->driver)->getLink('sowidokActivePassivePerson', $activePassivePerson)?>" rel="nofollow"><?=trim($this->escapeHtml($activePassivePerson))?></a>
+    <br />
+<?php endforeach; ?>
