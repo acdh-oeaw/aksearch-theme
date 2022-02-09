@@ -1,0 +1,42 @@
+<?php
+    // TODO: Check for accessibility (WCAG / ARIA)
+
+    // AK: Create clean search tab IDs for adding JavaScript translations for use in popover
+    $searchTabIds = array_column($searchTabs, 'id');
+    $searchTabIdsClean = [];
+    foreach ($searchTabIds as $searchTabId) {
+      $searchTabIdsClean[$searchTabId] = trim(preg_replace('/[^A-Za-z0-9]/', '_', trim($searchTabId)), '_');
+    }
+    $script = "VuFind.addTranslations({\n"
+      .implode(
+        ",\n",        
+        array_map(
+          function ($searchTabId) {
+            $translation = trim(preg_replace('/[^A-Za-z0-9]/', '_', trim($searchTabId)), '_').'_text';
+            return "'$translation': '" . $this->transEsc($translation) . "'";
+          },
+          $searchTabIdsClean
+        )
+      )
+      ."});\n";
+    echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $script, 'SET');
+
+    // AK: Include bootstrap-popover JS and CSS
+    $this->headScript()->appendFile('vendor/bootstrap-popover/bootstrap.popover.min.js');
+    $this->headLink()->appendStylesheet('popoverSearchTabs.css');
+    echo $this->inlineScript()->appendFile('popoverSearchTabs.js');
+?>
+
+<?php if (count($searchTabs) > 0): ?>
+  <ul class="nav nav-tabs">
+    <?php foreach ($searchTabs as $tab): ?>
+        <?php if ($this->permission()->allowDisplay($tab['permission'])): ?>
+          <li class="search-tab<?=$tab['selected'] ? ' active' : ''?>">
+            <a class="search-tab-link" <?=$tab['selected'] ? '' : 'href="' . $this->escapeHtmlAttr($tab['url']) . '"' ?><?=$tab['id'] ? ' id="'.$searchTabIdsClean[$tab['id']].'"' : ''?> data-toggle="popover" role="button" tabindex="0"><?=$this->transEsc($tab['label']); ?></a>
+          </li>
+        <?php elseif ($block = $this->permission()->getAlternateContent($tab['permission'])): ?>
+            <?=$block?>
+        <?php endif; ?>
+    <?php endforeach; ?>
+  </ul>
+<?php endif; ?>

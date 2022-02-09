@@ -3,7 +3,7 @@ $(document).ready(function () {
     // See: https://getbootstrap.com/docs/3.4/javascript/#popovers
     // TODO: Check for accessibility (WCAG / ARIA)
     var popoverKeywordChainTemplate = '<div class="popover popover-keyword-chain" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>';
-    $('[data-toggle="popover"]').popover({
+    $('.subject-line [data-toggle="popover"]').popover({
         title: VuFind.translate('searchFor')+' ...',
         html: true,
         placement: 'auto bottom',

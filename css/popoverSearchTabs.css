@@ -1,0 +1,44 @@
+/* See media queries for other width attributes */
+.popover-search-tab {
+    max-width: 40%;
+    width: inherit;
+}
+
+/* Smartphone sized screens */
+@media only screen 
+    and (min-width:0px)
+    and (max-width:499px) {
+    .popover-search-tab {
+        max-width: 85% !important;
+        width: inherit;
+    }
+}
+
+/* Tablet sized screens */
+@media only screen
+    and (min-width:500px)
+    and (max-width:1024px) {
+    .popover-search-tab {
+        max-width: 70% !important;
+        width: inherit;
+    }
+}
+
+/* Smaller desktops */
+@media only screen
+    and (min-width:1025px)
+    and (max-width:1899px) {
+    .popover-search-tab {
+        max-width: 37% !important;
+        width: inherit;
+    }
+}
+
+/* Bigger desktops */
+@media only screen
+    and (min-width:1900px) {
+    .popover-search-tab {
+        max-width: 27% !important;
+        width: inherit;
+    }
+}
