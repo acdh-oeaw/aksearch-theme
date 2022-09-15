@@ -533,7 +533,9 @@ header .search.container.navbar {
 }
 
 // Margin for year/volume panel without a nested issue panel
-// TODO: Fix - problem with Crome/Edge!
+// INFO: Removed because it breaks the layout in Chrome/Edge versions from an Update
+//       in Sep. 2022. Removing this rule does not affect the layout too badly in the
+//       rare cases it was used (see e. g. MMS ID 990002880450203343).
 /*
 :not(.yearVolPanelBody:has(div.issuePanel)) {
     margin-left: 18px;
